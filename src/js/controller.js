@@ -7,6 +7,9 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 const recipeContainer = document.querySelector('.recipe');
+const recipesContainer = document.querySelector('.search-results');
+const inputSearch = document.querySelector('.search__field');
+const btnSearch = document.querySelector('.search__btn');
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -34,10 +37,16 @@ const renderSpinner = function (parentEl) {
 
 const showRecipe = async function () {
   try {
+    // Vamos a obtener el id de la receta dinámicamente, desde el hash.
+    const id = window.location.hash.slice(1);
+    //console.log(id);
+    // Por si no hay ningun hash:
+    if (!id) return;
+
     // 1) Loading recipe
     renderSpinner(recipeContainer);
     const res = await fetch(
-      'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bcae1'
+      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
       //'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
     );
     const data = await res.json();
@@ -165,4 +174,72 @@ const showRecipe = async function () {
   }
 };
 
-showRecipe();
+const showRecipes = async function () {
+  try {
+    renderSpinner(recipesContainer);
+
+    const res = await fetch(
+      `https://forkify-api.herokuapp.com/api/v2/recipes?search=${inputSearch.value}`
+    );
+    const data = await res.json();
+    //console.log(res, data.data);
+    console.log(data.data.recipes);
+    //console.log(data.data.recipes[0]);
+
+    // reformateamos los datos recibidos y mapeamos la lista de encontrados
+
+    const listRecipes = data.data.recipes.map(function (el) {
+      let recipes = el;
+      recipes = {
+        id: recipes.id,
+        title: recipes.title,
+        publisher: recipes.publisher,
+        sourceUrl: `https://forkify-api.herokuapp.com/api/v2/recipes/${recipes.id}`,
+        image: recipes.image_url,
+      };
+
+      console.log(recipes);
+      const markup = `<li class="preview">
+            <a class="preview__link preview__link--active" href="#${recipes.id}">
+              <figure class="preview__fig">
+                <img src="${recipes.image}" alt="" />
+              </figure>
+              <div class="preview__data">
+                <h4 class="preview__title">${recipes.title} ...</h4>
+                <p class="preview__publisher">${recipes.publisher}</p>
+                <div class="preview__user-generated">
+                  <svg>
+                    <use href="${icons}#icon-user"></use>
+                  </svg>
+                </div>
+              </div>
+            </a>
+          </li>`;
+      //recipesContainer.innerHTML = '';
+      recipesContainer.insertAdjacentHTML('afterbegin', markup);
+    });
+  } catch (err) {
+    alert(err);
+  }
+};
+
+// Realizamos la busqueda de recetas una vez pulsado el boton search.
+btnSearch.addEventListener(
+  'click',
+
+  function (e) {
+    showRecipes();
+  }
+);
+
+// Vamos a escuchar un evento para que cada vez que seleccionemos una receta de la lista de recetas, como cambiamos el hash, detectaremos ese cambio para cargar la receta en la parte de los ingredientes.
+
+window.addEventListener('hashchange', showRecipe);
+
+// Si copiamos la pagina en otra pestaña del navegador, tenemos que controlar este movimiento pues como no ha cambiado el hash no mostraría receta alguna. Lo controlamos con el evento de carga de window.
+
+window.addEventListener('load', showRecipe);
+
+// Refactorizacion // Como vemos hay dos eventos que cargan la misma función y se escuchan en el mismo elemento del dom, cuando esto ocurre, con dos o mas podemos crear un arry con los nombres de los eventos y con un forEach podemos ejecutar la función.
+
+//['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipe));
