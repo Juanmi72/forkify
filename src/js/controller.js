@@ -1,3 +1,11 @@
+// En la arquitectura MVC Model-View-Controler este archivo contendrá todos los controladores de la aplicación.
+
+// Importamos desde model tanto el objeto state como la función loadRecipe(). Al hacerlo como model, después las podemos llamar con model.state o model.loadRecipe().
+import * as model from './model.js';
+
+// importamos desde recipeview.js la vista de la receta.
+import recipeView from './views/recipeview.js';
+
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 import icons from 'url:../img/icons.svg'; // Para la version 2 de Parcel.
@@ -6,7 +14,7 @@ import icons from 'url:../img/icons.svg'; // Para la version 2 de Parcel.
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
-const recipeContainer = document.querySelector('.recipe');
+//const recipeContainer = document.querySelector('.recipe');
 const recipesContainer = document.querySelector('.search-results');
 const inputSearch = document.querySelector('.search__field');
 const btnSearch = document.querySelector('.search__btn');
@@ -23,7 +31,7 @@ const timeout = function (s) {
 
 ///////////////////////////////////////
 
-const renderSpinner = function (parentEl) {
+/* const renderSpinner = function (parentEl) {
   const markup = `
     <div class="spinner">
       <svg>
@@ -33,16 +41,20 @@ const renderSpinner = function (parentEl) {
   `;
   parentEl.innerHTML = '';
   parentEl.insertAdjacentHTML('afterbegin', markup);
-};
+}; */
 
-const showRecipe = async function () {
+const controlRecipes = async function () {
   try {
     // Vamos a obtener el id de la receta dinámicamente, desde el hash.
     const id = window.location.hash.slice(1);
     //console.log(id);
     // Por si no hay ningun hash:
     if (!id) return;
+    // Refactorización
+    // El spiner ahora es un método de la clase recipeView.
+    recipeView.renderSpinner();
 
+    /*
     // 1) Loading recipe
     renderSpinner(recipeContainer);
     const res = await fetch(
@@ -67,9 +79,17 @@ const showRecipe = async function () {
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
     };
+ */
+
+    // Refactorización por módulos
+    // Como loadRecipe es una función asíncrona debemos utilizar await.
+    await model.loadRecipe(id);
+
+    // Para Probar
+    //const { recipe } = model.state;
 
     // 2) Rendering recipe
-    const markup = `
+    /* const markup = `
     <figure class="recipe__fig">
       <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img" />
       <h1 class="recipe__title">
@@ -168,7 +188,11 @@ const showRecipe = async function () {
       </a>
     </div>`;
     recipeContainer.innerHTML = '';
-    recipeContainer.insertAdjacentHTML('afterbegin', markup);
+    recipeContainer.insertAdjacentHTML('afterbegin', markup); */
+
+    // Refactorización por módulos
+    // Utilizamos la clase RecipeView con su metodo render para mostrar esta vista.
+    recipeView.render(model.state.recipe);
   } catch (err) {
     alert(err);
   }
@@ -224,21 +248,21 @@ const showRecipes = async function () {
 };
 
 // Realizamos la busqueda de recetas una vez pulsado el boton search.
-btnSearch.addEventListener(
+/* btnSearch.addEventListener(
   'click',
 
   function (e) {
     showRecipes();
   }
-);
+); */
 
 // Vamos a escuchar un evento para que cada vez que seleccionemos una receta de la lista de recetas, como cambiamos el hash, detectaremos ese cambio para cargar la receta en la parte de los ingredientes.
 
-window.addEventListener('hashchange', showRecipe);
+window.addEventListener('hashchange', controlRecipes);
 
 // Si copiamos la pagina en otra pestaña del navegador, tenemos que controlar este movimiento pues como no ha cambiado el hash no mostraría receta alguna. Lo controlamos con el evento de carga de window.
 
-window.addEventListener('load', showRecipe);
+window.addEventListener('load', controlRecipes);
 
 // Refactorizacion // Como vemos hay dos eventos que cargan la misma función y se escuchan en el mismo elemento del dom, cuando esto ocurre, con dos o mas podemos crear un arry con los nombres de los eventos y con un forEach podemos ejecutar la función.
 
