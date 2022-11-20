@@ -4,13 +4,19 @@
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 
+// Usamos una librería llamada fractional que la hemos instalado con:
+// npm install fractional
+// y la usaremos para convertir los 0.5 en 1/2.
+import { Fraction } from 'fractional';
+//console.log(Fraction);
+
 // Vamos a usas CLASES para las vistas, crearemos una clase que contendrá el elemento padre de esa vista en el dom y los datos, luego tendrá un método llamado render que tendrá los datos y un método privado que devolverá el contenido en el DOM.
 
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
 
-  render() {
+  render(data) {
     this.#data = data;
     const markup = this.#generateMarkup();
     this.#clear();
@@ -34,7 +40,7 @@ class RecipeView {
   };
 
   #generateMarkup() {
-    console.log(this.#data);
+    //console.log(this.#data);
     return `
         <figure class="recipe__fig">
           <img src="${this.#data.image}" alt="${
@@ -93,22 +99,7 @@ class RecipeView {
         <div class="recipe__ingredients">
           <h2 class="heading--2">Recipe ingredients</h2>      
           <ul class="recipe__ingredient-list">
-          ${this.#data.ingredients
-            .map(ing => {
-              return `
-              <li class="recipe__ingredient">
-                <svg class="recipe__icon">
-                  <use href="${icons}#icon-check"></use>
-                </svg>
-                <div class="recipe__quantity">${ing.quantity}</div>
-                <div class="recipe__description">
-                  <span class="recipe__unit">${ing.unit}</span>
-                  ${ing.description}
-                </div>
-              </li>
-            `;
-            })
-            .join('')}
+          ${this.#data.ingredients.map(this.#generateMarkupIngredient).join('')}
             
     
             
@@ -135,6 +126,22 @@ class RecipeView {
             </svg>
           </a>
         </div>`;
+  }
+  #generateMarkupIngredient(ing) {
+    return `
+      <li class="recipe__ingredient">
+        <svg class="recipe__icon">
+          <use href="${icons}#icon-check"></use>
+        </svg>
+        <div class="recipe__quantity">${
+          ing.quantity ? new Fraction(ing.quantity).toString() : ''
+        }</div>
+        <div class="recipe__description">
+          <span class="recipe__unit">${ing.unit}</span>
+          ${ing.description}
+        </div>
+      </li>
+    `;
   }
 }
 

@@ -16,7 +16,7 @@ import 'regenerator-runtime/runtime';
 
 //const recipeContainer = document.querySelector('.recipe');
 const recipesContainer = document.querySelector('.search-results');
-const inputSearch = document.querySelector('.search__field');
+//const inputSearch = document.querySelector('.search__field');
 const btnSearch = document.querySelector('.search__btn');
 
 const timeout = function (s) {
@@ -198,16 +198,24 @@ const controlRecipes = async function () {
   }
 };
 
-const showRecipes = async function () {
+const listRecipes = async function () {
   try {
-    renderSpinner(recipesContainer);
+    // Refactorizamos OJO PENDIENTE CONFIRMAR
+    recipeView.renderSpinner();
+    await model.loadRecipes();
+    console.log(model.state.recipes);
+    recipeView.render(model.state.recipes);
+
+    /*
+    //renderSpinner(recipesContainer);
+    
 
     const res = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes?search=${inputSearch.value}`
     );
     const data = await res.json();
     //console.log(res, data.data);
-    console.log(data.data.recipes);
+    //console.log(data.data.recipes);
     //console.log(data.data.recipes[0]);
 
     // reformateamos los datos recibidos y mapeamos la lista de encontrados
@@ -241,29 +249,31 @@ const showRecipes = async function () {
           </li>`;
       //recipesContainer.innerHTML = '';
       recipesContainer.insertAdjacentHTML('afterbegin', markup);
-    });
+    });*/
   } catch (err) {
     alert(err);
   }
 };
 
 // Realizamos la busqueda de recetas una vez pulsado el boton search.
-/* btnSearch.addEventListener(
+btnSearch.addEventListener(
   'click',
 
   function (e) {
-    showRecipes();
+    listRecipes();
   }
-); */
+);
 
 // Vamos a escuchar un evento para que cada vez que seleccionemos una receta de la lista de recetas, como cambiamos el hash, detectaremos ese cambio para cargar la receta en la parte de los ingredientes.
 
-window.addEventListener('hashchange', controlRecipes);
+//window.addEventListener('hashchange', controlRecipes);
 
 // Si copiamos la pagina en otra pestaña del navegador, tenemos que controlar este movimiento pues como no ha cambiado el hash no mostraría receta alguna. Lo controlamos con el evento de carga de window.
 
-window.addEventListener('load', controlRecipes);
+//window.addEventListener('load', controlRecipes);
 
 // Refactorizacion // Como vemos hay dos eventos que cargan la misma función y se escuchan en el mismo elemento del dom, cuando esto ocurre, con dos o mas podemos crear un arry con los nombres de los eventos y con un forEach podemos ejecutar la función.
 
-//['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipe));
+['hashchange', 'load'].forEach(ev =>
+  window.addEventListener(ev, controlRecipes)
+);

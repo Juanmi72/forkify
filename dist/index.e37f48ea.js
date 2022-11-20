@@ -535,8 +535,7 @@ function hmrAcceptRun(bundle, id) {
 // En la arquitectura MVC Model-View-Controler este archivo contendrá todos los controladores de la aplicación.
 // Importamos desde model tanto el objeto state como la función loadRecipe(). Al hacerlo como model, después las podemos llamar con model.state o model.loadRecipe().
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _esRegexpFlagsJs = require("core-js/modules/es.regexp.flags.js"); // Refactorizacion // Como vemos hay dos eventos que cargan la misma función y se escuchan en el mismo elemento del dom, cuando esto ocurre, con dos o mas podemos crear un arry con los nombres de los eventos y con un forEach podemos ejecutar la función.
- //['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipe));
+var _esRegexpFlagsJs = require("core-js/modules/es.regexp.flags.js");
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _modelJs = require("./model.js");
 // importamos desde recipeview.js la vista de la receta.
@@ -549,7 +548,7 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _runtime = require("regenerator-runtime/runtime");
 //const recipeContainer = document.querySelector('.recipe');
 const recipesContainer = document.querySelector(".search-results");
-const inputSearch = document.querySelector(".search__field");
+//const inputSearch = document.querySelector('.search__field');
 const btnSearch = document.querySelector(".search__btn");
 const timeout = function(s) {
     return new Promise(function(_, reject) {
@@ -717,26 +716,39 @@ const timeout = function(s) {
         alert(err);
     }
 };
-const showRecipes = async function() {
+const listRecipes = async function() {
     try {
-        renderSpinner(recipesContainer);
-        const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes?search=${inputSearch.value}`);
-        const data = await res.json();
-        //console.log(res, data.data);
-        console.log(data.data.recipes);
-        //console.log(data.data.recipes[0]);
-        // reformateamos los datos recibidos y mapeamos la lista de encontrados
-        const listRecipes = data.data.recipes.map(function(el) {
-            let recipes = el;
-            recipes = {
-                id: recipes.id,
-                title: recipes.title,
-                publisher: recipes.publisher,
-                sourceUrl: `https://forkify-api.herokuapp.com/api/v2/recipes/${recipes.id}`,
-                image: recipes.image_url
-            };
-            console.log(recipes);
-            const markup = `<li class="preview">
+        // Refactorizamos OJO PENDIENTE CONFIRMAR
+        (0, _recipeviewJsDefault.default).renderSpinner();
+        await _modelJs.loadRecipes();
+        console.log(_modelJs.state.recipes);
+        (0, _recipeviewJsDefault.default).render(_modelJs.state.recipes);
+    /*
+    //renderSpinner(recipesContainer);
+    
+
+    const res = await fetch(
+      `https://forkify-api.herokuapp.com/api/v2/recipes?search=${inputSearch.value}`
+    );
+    const data = await res.json();
+    //console.log(res, data.data);
+    //console.log(data.data.recipes);
+    //console.log(data.data.recipes[0]);
+
+    // reformateamos los datos recibidos y mapeamos la lista de encontrados
+
+    const listRecipes = data.data.recipes.map(function (el) {
+      let recipes = el;
+      recipes = {
+        id: recipes.id,
+        title: recipes.title,
+        publisher: recipes.publisher,
+        sourceUrl: `https://forkify-api.herokuapp.com/api/v2/recipes/${recipes.id}`,
+        image: recipes.image_url,
+      };
+
+      console.log(recipes);
+      const markup = `<li class="preview">
             <a class="preview__link preview__link--active" href="#${recipes.id}">
               <figure class="preview__fig">
                 <img src="${recipes.image}" alt="" />
@@ -746,30 +758,31 @@ const showRecipes = async function() {
                 <p class="preview__publisher">${recipes.publisher}</p>
                 <div class="preview__user-generated">
                   <svg>
-                    <use href="${(0, _iconsSvgDefault.default)}#icon-user"></use>
+                    <use href="${icons}#icon-user"></use>
                   </svg>
                 </div>
               </div>
             </a>
           </li>`;
-            //recipesContainer.innerHTML = '';
-            recipesContainer.insertAdjacentHTML("afterbegin", markup);
-        });
-    } catch (err) {
+      //recipesContainer.innerHTML = '';
+      recipesContainer.insertAdjacentHTML('afterbegin', markup);
+    });*/ } catch (err) {
         alert(err);
     }
 };
 // Realizamos la busqueda de recetas una vez pulsado el boton search.
-/* btnSearch.addEventListener(
-  'click',
-
-  function (e) {
-    showRecipes();
-  }
-); */ // Vamos a escuchar un evento para que cada vez que seleccionemos una receta de la lista de recetas, como cambiamos el hash, detectaremos ese cambio para cargar la receta en la parte de los ingredientes.
-window.addEventListener("hashchange", controlRecipes);
+btnSearch.addEventListener("click", function(e) {
+    listRecipes();
+});
+// Vamos a escuchar un evento para que cada vez que seleccionemos una receta de la lista de recetas, como cambiamos el hash, detectaremos ese cambio para cargar la receta en la parte de los ingredientes.
+//window.addEventListener('hashchange', controlRecipes);
 // Si copiamos la pagina en otra pestaña del navegador, tenemos que controlar este movimiento pues como no ha cambiado el hash no mostraría receta alguna. Lo controlamos con el evento de carga de window.
-window.addEventListener("load", controlRecipes);
+//window.addEventListener('load', controlRecipes);
+// Refactorizacion // Como vemos hay dos eventos que cargan la misma función y se escuchan en el mismo elemento del dom, cuando esto ocurre, con dos o mas podemos crear un arry con los nombres de los eventos y con un forEach podemos ejecutar la función.
+[
+    "hashchange",
+    "load"
+].forEach((ev)=>window.addEventListener(ev, controlRecipes));
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../img/icons.svg":"loVOp","core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
@@ -2633,8 +2646,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
+parcelHelpers.export(exports, "loadRecipes", ()=>loadRecipes);
 const state = {
-    recipe: {}
+    recipe: {},
+    recipes: {}
 };
 const loadRecipe = async function(id) {
     // Esta función cambiará nuestro estado global que contendrá la recipe y lo que hará serar cargar la receta con Fetch, que al ser una promesa vamos a manejar sus errores
@@ -2661,6 +2676,30 @@ const loadRecipe = async function(id) {
         alert(err.message);
     }
 };
+const loadRecipes = async function() {
+    const inputSearch = document.querySelector(".search__field");
+    try {
+        const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes?search=${inputSearch.value}`);
+        const data = await res.json();
+        //console.log(res, data.data);
+        //console.log(data.data.recipes);
+        //console.log(data.data.recipes[0]);
+        // reformateamos los datos recibidos y mapeamos la lista de encontrados
+        const listRecipes = data.data.recipes.map(function(el) {
+            let recipes1 = el;
+            recipes1 = {
+                id: recipes1.id,
+                title: recipes1.title,
+                publisher: recipes1.publisher,
+                sourceUrl: `https://forkify-api.herokuapp.com/api/v2/recipes/${recipes1.id}`,
+                image: recipes1.image_url
+            };
+        });
+        console.log(recipes);
+    } catch (err) {
+        alert(err.message);
+    }
+};
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8Jlc1":[function(require,module,exports) {
 // En la arquitectura MVC Model-View-Controler este archivo contendrá la vista de la receta y tendremos otros ficheros para las otras vistas.
@@ -2670,11 +2709,16 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _iconsSvg = require("url:../../img/icons.svg"); // Para la version 2 de Parcel.
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+// Usamos una librería llamada fractional que la hemos instalado con:
+// npm install fractional
+// y la usaremos para convertir los 0.5 en 1/2.
+var _fractional = require("fractional");
+//console.log(Fraction);
 // Vamos a usas CLASES para las vistas, crearemos una clase que contendrá el elemento padre de esa vista en el dom y los datos, luego tendrá un método llamado render que tendrá los datos y un método privado que devolverá el contenido en el DOM.
 class RecipeView {
     #parentElement = document.querySelector(".recipe");
     #data;
-    render() {
+    render(data) {
         this.#data = data;
         const markup = this.#generateMarkup();
         this.#clear();
@@ -2695,7 +2739,7 @@ class RecipeView {
         this.#parentElement.insertAdjacentHTML("afterbegin", markup);
     };
     #generateMarkup() {
-        console.log(this.#data);
+        //console.log(this.#data);
         return `
         <figure class="recipe__fig">
           <img src="${this.#data.image}" alt="${this.#data.title}" class="recipe__img" />
@@ -2748,20 +2792,7 @@ class RecipeView {
         <div class="recipe__ingredients">
           <h2 class="heading--2">Recipe ingredients</h2>      
           <ul class="recipe__ingredient-list">
-          ${this.#data.ingredients.map((ing)=>{
-            return `
-              <li class="recipe__ingredient">
-                <svg class="recipe__icon">
-                  <use href="${0, _iconsSvgDefault.default}#icon-check"></use>
-                </svg>
-                <div class="recipe__quantity">${ing.quantity}</div>
-                <div class="recipe__description">
-                  <span class="recipe__unit">${ing.unit}</span>
-                  ${ing.description}
-                </div>
-              </li>
-            `;
-        }).join("")}
+          ${this.#data.ingredients.map(this.#generateMarkupIngredient).join("")}
             
     
             
@@ -2787,10 +2818,277 @@ class RecipeView {
           </a>
         </div>`;
     }
+    #generateMarkupIngredient(ing) {
+        return `
+      <li class="recipe__ingredient">
+        <svg class="recipe__icon">
+          <use href="${0, _iconsSvgDefault.default}#icon-check"></use>
+        </svg>
+        <div class="recipe__quantity">${ing.quantity ? new (0, _fractional.Fraction)(ing.quantity).toString() : ""}</div>
+        <div class="recipe__description">
+          <span class="recipe__unit">${ing.unit}</span>
+          ${ing.description}
+        </div>
+      </li>
+    `;
+    }
 }
 // Exportamos una nueva instancia de la clase RecipeView.
 exports.default = new RecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/icons.svg":"loVOp"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/icons.svg":"loVOp","fractional":"3SU56"}],"3SU56":[function(require,module,exports) {
+/*
+fraction.js
+A Javascript fraction library.
+
+Copyright (c) 2009  Erik Garrison <erik@hypervolu.me>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/ /* Fractions */ /* 
+ *
+ * Fraction objects are comprised of a numerator and a denomenator.  These
+ * values can be accessed at fraction.numerator and fraction.denomenator.
+ *
+ * Fractions are always returned and stored in lowest-form normalized format.
+ * This is accomplished via Fraction.normalize.
+ *
+ * The following mathematical operations on fractions are supported:
+ *
+ * Fraction.equals
+ * Fraction.add
+ * Fraction.subtract
+ * Fraction.multiply
+ * Fraction.divide
+ *
+ * These operations accept both numbers and fraction objects.  (Best results
+ * are guaranteed when the input is a fraction object.)  They all return a new
+ * Fraction object.
+ *
+ * Usage:
+ *
+ * TODO
+ *
+ */ /*
+ * The Fraction constructor takes one of:
+ *   an explicit numerator (integer) and denominator (integer),
+ *   a string representation of the fraction (string),
+ *   or a floating-point number (float)
+ *
+ * These initialization methods are provided for convenience.  Because of
+ * rounding issues the best results will be given when the fraction is
+ * constructed from an explicit integer numerator and denomenator, and not a
+ * decimal number.
+ *
+ *
+ * e.g. new Fraction(1, 2) --> 1/2
+ *      new Fraction('1/2') --> 1/2
+ *      new Fraction('2 3/4') --> 11/4  (prints as 2 3/4)
+ *
+ */ Fraction = function(numerator, denominator) {
+    /* double argument invocation */ if (typeof numerator !== "undefined" && denominator) {
+        if (typeof numerator === "number" && typeof denominator === "number") {
+            this.numerator = numerator;
+            this.denominator = denominator;
+        } else if (typeof numerator === "string" && typeof denominator === "string") {
+            // what are they?
+            // hmm....
+            // assume they are ints?
+            this.numerator = parseInt(numerator);
+            this.denominator = parseInt(denominator);
+        }
+    /* single-argument invocation */ } else if (typeof denominator === "undefined") {
+        num = numerator; // swap variable names for legibility
+        if (typeof num === "number") {
+            this.numerator = num;
+            this.denominator = 1;
+        } else if (typeof num === "string") {
+            var a, b; // hold the first and second part of the fraction, e.g. a = '1' and b = '2/3' in 1 2/3
+            // or a = '2/3' and b = undefined if we are just passed a single-part number
+            var arr = num.split(" ");
+            if (arr[0]) a = arr[0];
+            if (arr[1]) b = arr[1];
+            /* compound fraction e.g. 'A B/C' */ //  if a is an integer ...
+            if (a % 1 === 0 && b && b.match("/")) return new Fraction(a).add(new Fraction(b));
+            else if (a && !b) {
+                /* simple fraction e.g. 'A/B' */ if (typeof a === "string" && a.match("/")) {
+                    // it's not a whole number... it's actually a fraction without a whole part written
+                    var f = a.split("/");
+                    this.numerator = f[0];
+                    this.denominator = f[1];
+                /* string floating point */ } else if (typeof a === "string" && a.match(".")) return new Fraction(parseFloat(a));
+                else {
+                    this.numerator = parseInt(a);
+                    this.denominator = 1;
+                }
+            } else return undefined; // could not parse
+        }
+    }
+    this.normalize();
+};
+Fraction.prototype.clone = function() {
+    return new Fraction(this.numerator, this.denominator);
+};
+/* pretty-printer, converts fractions into whole numbers and fractions */ Fraction.prototype.toString = function() {
+    if (this.denominator === "NaN") return "NaN";
+    var wholepart = this.numerator / this.denominator > 0 ? Math.floor(this.numerator / this.denominator) : Math.ceil(this.numerator / this.denominator);
+    var numerator = this.numerator % this.denominator;
+    var denominator = this.denominator;
+    var result = [];
+    if (wholepart != 0) result.push(wholepart);
+    if (numerator != 0) result.push((wholepart === 0 ? numerator : Math.abs(numerator)) + "/" + denominator);
+    return result.length > 0 ? result.join(" ") : 0;
+};
+/* destructively rescale the fraction by some integral factor */ Fraction.prototype.rescale = function(factor) {
+    this.numerator *= factor;
+    this.denominator *= factor;
+    return this;
+};
+Fraction.prototype.add = function(b) {
+    var a = this.clone();
+    if (b instanceof Fraction) b = b.clone();
+    else b = new Fraction(b);
+    td = a.denominator;
+    a.rescale(b.denominator);
+    b.rescale(td);
+    a.numerator += b.numerator;
+    return a.normalize();
+};
+Fraction.prototype.subtract = function(b) {
+    var a = this.clone();
+    if (b instanceof Fraction) b = b.clone(); // we scale our argument destructively, so clone
+    else b = new Fraction(b);
+    td = a.denominator;
+    a.rescale(b.denominator);
+    b.rescale(td);
+    a.numerator -= b.numerator;
+    return a.normalize();
+};
+Fraction.prototype.multiply = function(b) {
+    var a = this.clone();
+    if (b instanceof Fraction) {
+        a.numerator *= b.numerator;
+        a.denominator *= b.denominator;
+    } else if (typeof b === "number") a.numerator *= b;
+    else return a.multiply(new Fraction(b));
+    return a.normalize();
+};
+Fraction.prototype.divide = function(b) {
+    var a = this.clone();
+    if (b instanceof Fraction) {
+        a.numerator *= b.denominator;
+        a.denominator *= b.numerator;
+    } else if (typeof b === "number") a.denominator *= b;
+    else return a.divide(new Fraction(b));
+    return a.normalize();
+};
+Fraction.prototype.equals = function(b) {
+    if (!(b instanceof Fraction)) b = new Fraction(b);
+    // fractions that are equal should have equal normalized forms
+    var a = this.clone().normalize();
+    var b = b.clone().normalize();
+    return a.numerator === b.numerator && a.denominator === b.denominator;
+};
+/* Utility functions */ /* Destructively normalize the fraction to its smallest representation. 
+ * e.g. 4/16 -> 1/4, 14/28 -> 1/2, etc.
+ * This is called after all math ops.
+ */ Fraction.prototype.normalize = function() {
+    var isFloat = function(n) {
+        return typeof n === "number" && (n > 0 && n % 1 > 0 && n % 1 < 1 || n < 0 && n % -1 < 0 && n % -1 > -1);
+    };
+    var roundToPlaces = function(n, places) {
+        if (!places) return Math.round(n);
+        else {
+            var scalar = Math.pow(10, places);
+            return Math.round(n * scalar) / scalar;
+        }
+    };
+    return function() {
+        // XXX hackish.  Is there a better way to address this issue?
+        //
+        /* first check if we have decimals, and if we do eliminate them
+         * multiply by the 10 ^ number of decimal places in the number
+         * round the number to nine decimal places
+         * to avoid js floating point funnies
+         */ if (isFloat(this.denominator)) {
+            var rounded = roundToPlaces(this.denominator, 9);
+            var scaleup = Math.pow(10, rounded.toString().split(".")[1].length);
+            this.denominator = Math.round(this.denominator * scaleup); // this !!! should be a whole number
+            //this.numerator *= scaleup;
+            this.numerator *= scaleup;
+        }
+        if (isFloat(this.numerator)) {
+            var rounded = roundToPlaces(this.numerator, 9);
+            var scaleup = Math.pow(10, rounded.toString().split(".")[1].length);
+            this.numerator = Math.round(this.numerator * scaleup); // this !!! should be a whole number
+            //this.numerator *= scaleup;
+            this.denominator *= scaleup;
+        }
+        var gcf = Fraction.gcf(this.numerator, this.denominator);
+        this.numerator /= gcf;
+        this.denominator /= gcf;
+        if (this.numerator < 0 && this.denominator < 0 || this.numerator > 0 && this.denominator < 0) {
+            this.numerator *= -1;
+            this.denominator *= -1;
+        }
+        return this;
+    };
+}();
+/* Takes two numbers and returns their greatest common factor.
+ */ Fraction.gcf = function(a, b) {
+    var common_factors = [];
+    var fa = Fraction.primeFactors(a);
+    var fb = Fraction.primeFactors(b);
+    // for each factor in fa
+    // if it's also in fb
+    // put it into the common factors
+    fa.forEach(function(factor) {
+        var i = fb.indexOf(factor);
+        if (i >= 0) {
+            common_factors.push(factor);
+            fb.splice(i, 1); // remove from fb
+        }
+    });
+    if (common_factors.length === 0) return 1;
+    var gcf = function() {
+        var r = common_factors[0];
+        var i;
+        for(i = 1; i < common_factors.length; i++)r = r * common_factors[i];
+        return r;
+    }();
+    return gcf;
+};
+// Adapted from: 
+// http://www.btinternet.com/~se16/js/factor.htm
+Fraction.primeFactors = function(n) {
+    var num1 = Math.abs(n);
+    var factors = [];
+    var _factor = 2; // first potential prime factor
+    while(_factor * _factor <= num1)if (num1 % _factor === 0) {
+        factors.push(_factor); // so keep it
+        num1 = num1 / _factor; // and divide our search point by it
+    } else _factor++; // and increment
+    if (num1 != 1) factors.push(num1); //    so it too should be recorded
+    return factors; // Return the prime factors
+};
+module.exports.Fraction = Fraction;
+
+},{}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map

@@ -4,6 +4,7 @@
 
 export const state = {
   recipe: {},
+  recipes: {},
 };
 
 export const loadRecipe = async function (id) {
@@ -34,6 +35,36 @@ export const loadRecipe = async function (id) {
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
     };
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
+export const loadRecipes = async function () {
+  const inputSearch = document.querySelector('.search__field');
+  try {
+    const res = await fetch(
+      `https://forkify-api.herokuapp.com/api/v2/recipes?search=${inputSearch.value}`
+    );
+    const data = await res.json();
+    //console.log(res, data.data);
+    //console.log(data.data.recipes);
+    //console.log(data.data.recipes[0]);
+
+    // reformateamos los datos recibidos y mapeamos la lista de encontrados
+
+    const listRecipes = data.data.recipes.map(function (el) {
+      let recipes = el;
+      recipes = {
+        id: recipes.id,
+        title: recipes.title,
+        publisher: recipes.publisher,
+        sourceUrl: `https://forkify-api.herokuapp.com/api/v2/recipes/${recipes.id}`,
+        image: recipes.image_url,
+      };
+    });
+
+    console.log(recipes);
   } catch (err) {
     alert(err.message);
   }
