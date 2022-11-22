@@ -1,5 +1,11 @@
 // En la arquitectura MVC Model-View-Controler este archivo contendrá todos los modelos de la aplicación.(la receta, la búsqueda, los marcadores, etc...)
 
+// Importamos varias cosas
+
+import { async } from 'regenerator-runtime';
+import { API_URL } from './config.js';
+import { getJSON } from './helpers.js';
+
 // Tendremos un estado global que será un objeto que contiene lo que hemos dicho arriba.
 
 export const state = {
@@ -12,15 +18,19 @@ export const loadRecipe = async function (id) {
 
   // 1) Loading recipe
   try {
-    const res = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-      //'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
-    );
-    const data = await res.json();
-    console.log(res, data.data.recipe);
+    // Estas lineas las pasamos a una función en helpers.js
+    // const res = await fetch(
+    //   `${API_URL}/${id}`
+    //   //'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
+    // );
+    // const data = await res.json();
+    // console.log(res, data.data.recipe);
 
-    // En la API tenemos una propiedad 'ok' que si es false es porque se ha producido un error y nos vale para generar un error nosotros.
-    if (!res.ok) throw Error(`${data.message} ${res.status}`);
+    // // En la API tenemos una propiedad 'ok' que si es false es porque se ha producido un error y nos vale para generar un error nosotros.
+    // if (!res.ok) throw Error(`${data.message} ${res.status}`);
+
+    // Refactorización hacia helpers.js
+    const data = await getJSON(`${API_URL}/${id}`);
 
     // reformateamos los datos recibidos
     const { recipe } = data.data;
@@ -36,16 +46,15 @@ export const loadRecipe = async function (id) {
       ingredients: recipe.ingredients,
     };
   } catch (err) {
-    alert(err.message);
+    // Temp error handling
+    console.log(`${err} 💥`);
   }
 };
 
 export const loadRecipes = async function () {
   const inputSearch = document.querySelector('.search__field');
   try {
-    const res = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes?search=${inputSearch.value}`
-    );
+    const res = await fetch(`${API_URL}?search=${inputSearch.value}`);
     const data = await res.json();
     //console.log(res, data.data);
     //console.log(data.data.recipes);
@@ -59,7 +68,7 @@ export const loadRecipes = async function () {
         id: recipes.id,
         title: recipes.title,
         publisher: recipes.publisher,
-        sourceUrl: `https://forkify-api.herokuapp.com/api/v2/recipes/${recipes.id}`,
+        sourceUrl: `${API_URL}/${recipes.id}`,
         image: recipes.image_url,
       };
     });

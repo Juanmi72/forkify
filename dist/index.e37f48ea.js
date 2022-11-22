@@ -550,13 +550,14 @@ var _runtime = require("regenerator-runtime/runtime");
 const recipesContainer = document.querySelector(".search-results");
 //const inputSearch = document.querySelector('.search__field');
 const btnSearch = document.querySelector(".search__btn");
-const timeout = function(s) {
-    return new Promise(function(_, reject) {
-        setTimeout(function() {
-            reject(new Error(`Request took too long! Timeout after ${s} second`));
-        }, s * 1000);
-    });
-};
+// Nos la llevamos a helpers.js
+// const timeout = function (s) {
+//   return new Promise(function (_, reject) {
+//     setTimeout(function () {
+//       reject(new Error(`Request took too long! Timeout after ${s} second`));
+//     }, s * 1000);
+//   });
+// };
 // https://forkify-api.herokuapp.com/v2  // API
 ///////////////////////////////////////
 /* const renderSpinner = function (parentEl) {
@@ -2641,12 +2642,15 @@ try {
 
 },{}],"Y4A21":[function(require,module,exports) {
 // En la arquitectura MVC Model-View-Controler este archivo contendrá todos los modelos de la aplicación.(la receta, la búsqueda, los marcadores, etc...)
-// Tendremos un estado global que será un objeto que contiene lo que hemos dicho arriba.
+// Importamos varias cosas
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
 parcelHelpers.export(exports, "loadRecipes", ()=>loadRecipes);
+var _regeneratorRuntime = require("regenerator-runtime");
+var _configJs = require("./config.js");
+var _helpersJs = require("./helpers.js");
 const state = {
     recipe: {},
     recipes: {}
@@ -2655,11 +2659,17 @@ const loadRecipe = async function(id) {
     // Esta función cambiará nuestro estado global que contendrá la recipe y lo que hará serar cargar la receta con Fetch, que al ser una promesa vamos a manejar sus errores
     // 1) Loading recipe
     try {
-        const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`);
-        const data = await res.json();
-        console.log(res, data.data.recipe);
-        // En la API tenemos una propiedad 'ok' que si es false es porque se ha producido un error y nos vale para generar un error nosotros.
-        if (!res.ok) throw Error(`${data.message} ${res.status}`);
+        // Estas lineas las pasamos a una función en helpers.js
+        // const res = await fetch(
+        //   `${API_URL}/${id}`
+        //   //'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
+        // );
+        // const data = await res.json();
+        // console.log(res, data.data.recipe);
+        // // En la API tenemos una propiedad 'ok' que si es false es porque se ha producido un error y nos vale para generar un error nosotros.
+        // if (!res.ok) throw Error(`${data.message} ${res.status}`);
+        // Refactorización hacia helpers.js
+        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_URL)}/${id}`);
         // reformateamos los datos recibidos
         const { recipe  } = data.data;
         state.recipe = {
@@ -2673,13 +2683,14 @@ const loadRecipe = async function(id) {
             ingredients: recipe.ingredients
         };
     } catch (err) {
-        alert(err.message);
+        // Temp error handling
+        console.log(`${err} 💥`);
     }
 };
 const loadRecipes = async function() {
     const inputSearch = document.querySelector(".search__field");
     try {
-        const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes?search=${inputSearch.value}`);
+        const res = await fetch(`${(0, _configJs.API_URL)}?search=${inputSearch.value}`);
         const data = await res.json();
         //console.log(res, data.data);
         //console.log(data.data.recipes);
@@ -2691,7 +2702,7 @@ const loadRecipes = async function() {
                 id: recipes1.id,
                 title: recipes1.title,
                 publisher: recipes1.publisher,
-                sourceUrl: `https://forkify-api.herokuapp.com/api/v2/recipes/${recipes1.id}`,
+                sourceUrl: `${0, _configJs.API_URL}/${recipes1.id}`,
                 image: recipes1.image_url
             };
         });
@@ -2701,7 +2712,47 @@ const loadRecipes = async function() {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8Jlc1":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
+// Se utiliza para poner todas las variables que deberían ser constantes en cualquier proyecto y reutilizarse en todo el proyecto.
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "API_URL", ()=>API_URL);
+parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC);
+const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes";
+const TIMEOUT_SEC = 10;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hGI1E":[function(require,module,exports) {
+// Este fichero contendrá una serie de funciones que vamos a estar utilizando todo el tiempo en otros módulos.
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "getJSON", ()=>getJSON);
+var _configJs = require("./config.js");
+// esto es una funcion que devuelve una promesa que tiene un setTimeout.
+const timeout = function(s) {
+    return new Promise(function(_, reject) {
+        setTimeout(function() {
+            reject(new Error(`Request took too long! Timeout after ${s} second`));
+        }, s * 1000);
+    });
+};
+const getJSON = async function(url) {
+    try {
+        // Utilizamos el timeout y ejecutamos el Promise.race para que la primera función asíncrona que se ejecute paralize a la otra.
+        const fetchPro = fetch(url);
+        const res = await Promise.race([
+            fetchPro,
+            timeout((0, _configJs.TIMEOUT_SEC))
+        ]);
+        const data = await res.json();
+        if (!res.ok) throw Error(`${data.message} ${res.status}`);
+        return data;
+    } catch (err) {
+        // Para poder controlar el error que se produce aquí en la petición en el fichero model.js que es desde donde se llama a esta función, cuando se produzca el error aquí lo atrapamos con el catch y generamos un nuevo error en el catch con thorow. Con esto forzamos a que la promesa que devuelve la función asíncrona getJSON será rechazada y la podremos tratar en el catch del fichero que la llamó.
+        throw err;
+    }
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs"}],"8Jlc1":[function(require,module,exports) {
 // En la arquitectura MVC Model-View-Controler este archivo contendrá la vista de la receta y tendremos otros ficheros para las otras vistas.
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.

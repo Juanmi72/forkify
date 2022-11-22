@@ -19,13 +19,15 @@ const recipesContainer = document.querySelector('.search-results');
 //const inputSearch = document.querySelector('.search__field');
 const btnSearch = document.querySelector('.search__btn');
 
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
+// Nos la llevamos a helpers.js
+
+// const timeout = function (s) {
+//   return new Promise(function (_, reject) {
+//     setTimeout(function () {
+//       reject(new Error(`Request took too long! Timeout after ${s} second`));
+//     }, s * 1000);
+//   });
+// };
 
 // https://forkify-api.herokuapp.com/v2  // API
 
