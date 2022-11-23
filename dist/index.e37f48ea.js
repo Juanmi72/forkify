@@ -541,6 +541,9 @@ var _modelJs = require("./model.js");
 // importamos desde recipeview.js la vista de la receta.
 var _recipeviewJs = require("./views/recipeview.js");
 var _recipeviewJsDefault = parcelHelpers.interopDefault(_recipeviewJs);
+// Importamos desde searchview.js el input de nuestro DOM
+var _searchviewJs = require("./views/searchview.js");
+var _searchviewJsDefault = parcelHelpers.interopDefault(_searchviewJs);
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 var _iconsSvg = require("url:../img/icons.svg"); // Para la version 2 de Parcel.
@@ -714,16 +717,22 @@ const btnSearch = document.querySelector(".search__btn");
         // Utilizamos la clase RecipeView con su metodo render para mostrar esta vista.
         (0, _recipeviewJsDefault.default).render(_modelJs.state.recipe);
     } catch (err) {
-        alert(err);
+        //console.log(err);
+        (0, _recipeviewJsDefault.default).renderError();
     }
 };
-const listRecipes = async function() {
+const controlSearchResults = async function() {
     try {
-        // Refactorizamos OJO PENDIENTE CONFIRMAR
+        // Refactorizamos
         (0, _recipeviewJsDefault.default).renderSpinner();
-        await _modelJs.loadRecipes();
-        console.log(_modelJs.state.recipes);
-        (0, _recipeviewJsDefault.default).render(_modelJs.state.recipes);
+        // 1) Obtener cadena que vamos a consultar
+        const query = (0, _searchviewJsDefault.default).getQuery();
+        if (!query) return;
+        // 2) Cargar resultados encontrados
+        await _modelJs.loadSearchResults(query);
+        console.log(_modelJs.state.search.results);
+    // 3) Mostrar resultados
+    //recipeView.render(model.state.recipes);
     /*
     //renderSpinner(recipesContainer);
     
@@ -749,7 +758,9 @@ const listRecipes = async function() {
       };
 
       console.log(recipes);
-      const markup = `<li class="preview">
+
+    
+    const markup = `<li class="preview">
             <a class="preview__link preview__link--active" href="#${recipes.id}">
               <figure class="preview__fig">
                 <img src="${recipes.image}" alt="" />
@@ -765,27 +776,37 @@ const listRecipes = async function() {
               </div>
             </a>
           </li>`;
-      //recipesContainer.innerHTML = '';
-      recipesContainer.insertAdjacentHTML('afterbegin', markup);
+    //recipesContainer.innerHTML = '';
+    recipesContainer.insertAdjacentHTML('afterbegin', markup);
+
     });*/ } catch (err) {
-        alert(err);
+        console.log(err);
     }
 };
 // Realizamos la busqueda de recetas una vez pulsado el boton search.
-btnSearch.addEventListener("click", function(e) {
-    listRecipes();
-});
-// Vamos a escuchar un evento para que cada vez que seleccionemos una receta de la lista de recetas, como cambiamos el hash, detectaremos ese cambio para cargar la receta en la parte de los ingredientes.
+// Lo hemos refactorizado con submit en el init() para qeu se ejecute tanto cuando se pulsa el boton como cuando se valida con intro el input.
+/* btnSearch.addEventListener(
+  'click',
+
+  function (e) {
+    controlSearchResults();
+  }
+); */ // Vamos a escuchar un evento para que cada vez que seleccionemos una receta de la lista de recetas, como cambiamos el hash, detectaremos ese cambio para cargar la receta en la parte de los ingredientes.
 //window.addEventListener('hashchange', controlRecipes);
 // Si copiamos la pagina en otra pestaña del navegador, tenemos que controlar este movimiento pues como no ha cambiado el hash no mostraría receta alguna. Lo controlamos con el evento de carga de window.
 //window.addEventListener('load', controlRecipes);
 // Refactorizacion // Como vemos hay dos eventos que cargan la misma función y se escuchan en el mismo elemento del dom, cuando esto ocurre, con dos o mas podemos crear un arry con los nombres de los eventos y con un forEach podemos ejecutar la función.
-[
-    "hashchange",
-    "load"
-].forEach((ev)=>window.addEventListener(ev, controlRecipes));
+// ['hashchange', 'load'].forEach(ev =>
+//   window.addEventListener(ev, controlRecipes)
+// );
+// Refactorizamos el manejo de eventos, según un método de diseño llamado Publicador-Editor por el cual nosotro definimos los eventos según el modelo de arquitectura MVC en la vista(recipeview.js), pero vemos como aquí llamamos en los eventos a una función que se encuentra en el controller.js, la solución es definir la llamada en recipeview.js y éste recibe una función, que será la que le enviamos desde el controller.js.
+const init = function() {
+    (0, _recipeviewJsDefault.default).addHandlerRender(controlRecipes);
+    (0, _searchviewJsDefault.default).addHandlerSearch(controlSearchResults);
+};
+init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../img/icons.svg":"loVOp","core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../img/icons.svg":"loVOp","core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1","./views/searchview.js":"furg1"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -2647,13 +2668,16 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
-parcelHelpers.export(exports, "loadRecipes", ()=>loadRecipes);
+parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
 const state = {
     recipe: {},
-    recipes: {}
+    search: {
+        query: "",
+        results: []
+    }
 };
 const loadRecipe = async function(id) {
     // Esta función cambiará nuestro estado global que contendrá la recipe y lo que hará serar cargar la receta con Fetch, que al ser una promesa vamos a manejar sus errores
@@ -2684,31 +2708,40 @@ const loadRecipe = async function(id) {
         };
     } catch (err) {
         // Temp error handling
-        console.log(`${err} 💥`);
+        console.log(`${err} 💥💥💥💥💥`);
+        throw err;
     }
 };
-const loadRecipes = async function() {
-    const inputSearch = document.querySelector(".search__field");
+const loadSearchResults = async function(query) {
+    //const inputSearch = document.querySelector('.search__field');
     try {
-        const res = await fetch(`${(0, _configJs.API_URL)}?search=${inputSearch.value}`);
-        const data = await res.json();
+        // const res = await fetch(`${API_URL}?search=${inputSearch.value}`);
+        // const data = await res.json();
         //console.log(res, data.data);
         //console.log(data.data.recipes);
         //console.log(data.data.recipes[0]);
+        // Refactorizacion llamada a lista de recetas
+        state.search.query = query;
+        console.log(query);
+        //const data = await getJSON(`${API_URL}?search=${inputSearch.value}`);
+        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_URL)}?search=${query}`);
+        //console.log(data.data.recipes);
         // reformateamos los datos recibidos y mapeamos la lista de encontrados
-        const listRecipes = data.data.recipes.map(function(el) {
-            let recipes1 = el;
-            recipes1 = {
-                id: recipes1.id,
-                title: recipes1.title,
-                publisher: recipes1.publisher,
-                sourceUrl: `${0, _configJs.API_URL}/${recipes1.id}`,
-                image: recipes1.image_url
+        state.search.results = data.data.recipes.map(function(el) {
+            //let recipes = el;
+            //console.log(el);
+            return {
+                id: el.id,
+                title: el.title,
+                publisher: el.publisher,
+                sourceUrl: `${0, _configJs.API_URL}/${el.id}`,
+                image: el.image_url
             };
         });
-        console.log(recipes);
+        console.log(state.search.results);
     } catch (err) {
-        alert(err.message);
+        console.log(`${err} 💥💥💥💥💥`);
+        throw err;
     }
 };
 
@@ -2769,6 +2802,8 @@ var _fractional = require("fractional");
 class RecipeView {
     #parentElement = document.querySelector(".recipe");
     #data;
+    #errorMessage = "We could not find that recipe. Please try another one!";
+    #message = "";
     render(data) {
         this.#data = data;
         const markup = this.#generateMarkup();
@@ -2778,7 +2813,8 @@ class RecipeView {
     #clear() {
         this.#parentElement.innerHTML = "";
     }
-    renderSpinner = function() {
+    // Diseño de nuestro Spinner
+    renderSpinner() {
         const markup = `
       <div class="spinner">
         <svg>
@@ -2786,9 +2822,46 @@ class RecipeView {
         </svg>
       </div> 
     `;
-        this.#parentElement.innerHTML = "";
+        this.#clear();
         this.#parentElement.insertAdjacentHTML("afterbegin", markup);
-    };
+    }
+    // Manejo de Errores de rechazo
+    renderError(message = this.#errorMessage) {
+        const markup = `
+    <div class="error">
+      <div>
+        <svg>
+          <use href="${(0, _iconsSvgDefault.default)}#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>${message}</p>
+    </div>`;
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    // Manejo de Errores de éxito
+    renderError(message = this.#message) {
+        const markup = `
+    <div class="recipe">
+    <div class="message">
+      <div>
+        <svg>
+          <use href="${(0, _iconsSvgDefault.default)}#icon-smile"></use>
+        </svg>
+      </div>
+      <p>${message}</p>
+    </div>`;
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    // Manejo de Eventos
+    addHandlerRender(handler) {
+        [
+            "hashchange",
+            "load"
+        ].forEach((ev)=>window.addEventListener(ev, handler));
+    }
+    // Mostrar nuestra receta
     #generateMarkup() {
         //console.log(this.#data);
         return `
@@ -2869,6 +2942,7 @@ class RecipeView {
           </a>
         </div>`;
     }
+    // Reformatear nuestras cantidades de ingredientes
     #generateMarkupIngredient(ing) {
         return `
       <li class="recipe__ingredient">
@@ -3140,6 +3214,32 @@ Fraction.primeFactors = function(n) {
 };
 module.exports.Fraction = Fraction;
 
-},{}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
+},{}],"furg1":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class SearchView {
+    #parentEl = document.querySelector(".search");
+    // es el valor del input de nuestra consulta de recetas.
+    getQuery() {
+        const query = this.#parentEl.querySelector(".search__field").value;
+        // const query = document
+        //   .querySelector('.search')
+        //   .querySelector('.search__field').value;
+        this.#clearInput();
+        return query;
+    }
+    #clearInput() {
+        this.#parentEl.querySelector(".search__field").value = " ";
+    }
+    addHandlerSearch(handler) {
+        this.#parentEl.addEventListener("submit", function(e) {
+            e.preventDefault();
+            handler();
+        });
+    }
+}
+exports.default = new SearchView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map

@@ -6,6 +6,9 @@ import * as model from './model.js';
 // importamos desde recipeview.js la vista de la receta.
 import recipeView from './views/recipeview.js';
 
+// Importamos desde searchview.js el input de nuestro DOM
+import searchView from './views/searchview.js';
+
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 import icons from 'url:../img/icons.svg'; // Para la version 2 de Parcel.
@@ -196,17 +199,26 @@ const controlRecipes = async function () {
     // Utilizamos la clase RecipeView con su metodo render para mostrar esta vista.
     recipeView.render(model.state.recipe);
   } catch (err) {
-    alert(err);
+    //console.log(err);
+    recipeView.renderError();
   }
 };
 
-const listRecipes = async function () {
+const controlSearchResults = async function () {
   try {
-    // Refactorizamos OJO PENDIENTE CONFIRMAR
+    // Refactorizamos
     recipeView.renderSpinner();
-    await model.loadRecipes();
-    console.log(model.state.recipes);
-    recipeView.render(model.state.recipes);
+    // 1) Obtener cadena que vamos a consultar
+    const query = searchView.getQuery();
+
+    if (!query) return;
+
+    // 2) Cargar resultados encontrados
+    await model.loadSearchResults(query);
+    console.log(model.state.search.results);
+
+    // 3) Mostrar resultados
+    //recipeView.render(model.state.recipes);
 
     /*
     //renderSpinner(recipesContainer);
@@ -233,7 +245,9 @@ const listRecipes = async function () {
       };
 
       console.log(recipes);
-      const markup = `<li class="preview">
+
+    
+    const markup = `<li class="preview">
             <a class="preview__link preview__link--active" href="#${recipes.id}">
               <figure class="preview__fig">
                 <img src="${recipes.image}" alt="" />
@@ -249,22 +263,24 @@ const listRecipes = async function () {
               </div>
             </a>
           </li>`;
-      //recipesContainer.innerHTML = '';
-      recipesContainer.insertAdjacentHTML('afterbegin', markup);
+    //recipesContainer.innerHTML = '';
+    recipesContainer.insertAdjacentHTML('afterbegin', markup);
+
     });*/
   } catch (err) {
-    alert(err);
+    console.log(err);
   }
 };
 
 // Realizamos la busqueda de recetas una vez pulsado el boton search.
-btnSearch.addEventListener(
+// Lo hemos refactorizado con submit en el init() para qeu se ejecute tanto cuando se pulsa el boton como cuando se valida con intro el input.
+/* btnSearch.addEventListener(
   'click',
 
   function (e) {
-    listRecipes();
+    controlSearchResults();
   }
-);
+); */
 
 // Vamos a escuchar un evento para que cada vez que seleccionemos una receta de la lista de recetas, como cambiamos el hash, detectaremos ese cambio para cargar la receta en la parte de los ingredientes.
 
@@ -276,6 +292,14 @@ btnSearch.addEventListener(
 
 // Refactorizacion // Como vemos hay dos eventos que cargan la misma función y se escuchan en el mismo elemento del dom, cuando esto ocurre, con dos o mas podemos crear un arry con los nombres de los eventos y con un forEach podemos ejecutar la función.
 
-['hashchange', 'load'].forEach(ev =>
-  window.addEventListener(ev, controlRecipes)
-);
+// ['hashchange', 'load'].forEach(ev =>
+//   window.addEventListener(ev, controlRecipes)
+// );
+
+// Refactorizamos el manejo de eventos, según un método de diseño llamado Publicador-Editor por el cual nosotro definimos los eventos según el modelo de arquitectura MVC en la vista(recipeview.js), pero vemos como aquí llamamos en los eventos a una función que se encuentra en el controller.js, la solución es definir la llamada en recipeview.js y éste recibe una función, que será la que le enviamos desde el controller.js.
+
+const init = function () {
+  recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
+};
+init();

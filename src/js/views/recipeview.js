@@ -15,6 +15,8 @@ import { Fraction } from 'fractional';
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
+  #errorMessage = 'We could not find that recipe. Please try another one!';
+  #message = '';
 
   render(data) {
     this.#data = data;
@@ -27,7 +29,8 @@ class RecipeView {
     this.#parentElement.innerHTML = '';
   }
 
-  renderSpinner = function () {
+  // Diseño de nuestro Spinner
+  renderSpinner() {
     const markup = `
       <div class="spinner">
         <svg>
@@ -35,10 +38,45 @@ class RecipeView {
         </svg>
       </div> 
     `;
-    this.#parentElement.innerHTML = '';
+    this.#clear();
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
-  };
+  }
+  // Manejo de Errores de rechazo
+  renderError(message = this.#errorMessage) {
+    const markup = `
+    <div class="error">
+      <div>
+        <svg>
+          <use href="${icons}#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>${message}</p>
+    </div>`;
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+  // Manejo de Errores de éxito
+  renderError(message = this.#message) {
+    const markup = `
+    <div class="recipe">
+    <div class="message">
+      <div>
+        <svg>
+          <use href="${icons}#icon-smile"></use>
+        </svg>
+      </div>
+      <p>${message}</p>
+    </div>`;
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
 
+  // Manejo de Eventos
+  addHandlerRender(handler) {
+    ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
+  }
+
+  // Mostrar nuestra receta
   #generateMarkup() {
     //console.log(this.#data);
     return `
@@ -127,6 +165,8 @@ class RecipeView {
           </a>
         </div>`;
   }
+
+  // Reformatear nuestras cantidades de ingredientes
   #generateMarkupIngredient(ing) {
     return `
       <li class="recipe__ingredient">

@@ -10,7 +10,10 @@ import { getJSON } from './helpers.js';
 
 export const state = {
   recipe: {},
-  recipes: {},
+  search: {
+    query: '',
+    results: [],
+  },
 };
 
 export const loadRecipe = async function (id) {
@@ -47,34 +50,44 @@ export const loadRecipe = async function (id) {
     };
   } catch (err) {
     // Temp error handling
-    console.log(`${err} 💥`);
+    console.log(`${err} 💥💥💥💥💥`);
+    throw err;
   }
 };
 
-export const loadRecipes = async function () {
-  const inputSearch = document.querySelector('.search__field');
+export const loadSearchResults = async function (query) {
+  //const inputSearch = document.querySelector('.search__field');
   try {
-    const res = await fetch(`${API_URL}?search=${inputSearch.value}`);
-    const data = await res.json();
+    // const res = await fetch(`${API_URL}?search=${inputSearch.value}`);
+    // const data = await res.json();
     //console.log(res, data.data);
     //console.log(data.data.recipes);
     //console.log(data.data.recipes[0]);
 
+    // Refactorizacion llamada a lista de recetas
+    state.search.query = query;
+    console.log(query);
+    //const data = await getJSON(`${API_URL}?search=${inputSearch.value}`);
+    const data = await getJSON(`${API_URL}?search=${query}`);
+
+    //console.log(data.data.recipes);
     // reformateamos los datos recibidos y mapeamos la lista de encontrados
 
-    const listRecipes = data.data.recipes.map(function (el) {
-      let recipes = el;
-      recipes = {
-        id: recipes.id,
-        title: recipes.title,
-        publisher: recipes.publisher,
-        sourceUrl: `${API_URL}/${recipes.id}`,
-        image: recipes.image_url,
+    state.search.results = data.data.recipes.map(function (el) {
+      //let recipes = el;
+      //console.log(el);
+      return {
+        id: el.id,
+        title: el.title,
+        publisher: el.publisher,
+        sourceUrl: `${API_URL}/${el.id}`,
+        image: el.image_url,
       };
     });
 
-    console.log(recipes);
+    console.log(state.search.results);
   } catch (err) {
-    alert(err.message);
+    console.log(`${err} 💥💥💥💥💥`);
+    throw err;
   }
 };
