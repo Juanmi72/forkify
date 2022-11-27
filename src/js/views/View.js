@@ -3,7 +3,7 @@
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 
-export default class view {
+export default class View {
   _parentElement = document.querySelector('.recipe');
 
   _errorMessage = 'We could not find that recipe. Please try another one!';

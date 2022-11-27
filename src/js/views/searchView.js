@@ -17,9 +17,8 @@ class SearchView {
     this._data = data;
     this._data.forEach(function () {
       const markup = this._generateMarkup();
-      this._parentElResults.insertAdjacentHTML('afterbegin', markup);
+      this._parentElement.insertAdjacentHTML('afterbegin', markup);
     });
-    //this.#clear();
   }
 
   _clearInput() {
