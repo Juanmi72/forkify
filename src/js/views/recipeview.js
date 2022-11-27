@@ -10,23 +10,30 @@ import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 import { Fraction } from 'fractional';
 //console.log(Fraction);
 
-// Vamos a usas CLASES para las vistas, crearemos una clase que contendrá el elemento padre de esa vista en el dom y los datos, luego tendrá un método llamado render que tendrá los datos y un método privado que devolverá el contenido en el DOM.
+// Refactorizamos las vistas en todo lo que se va a repetir en las dos vistas.
+import View from './View.js';
 
-class RecipeView {
-  #parentElement = document.querySelector('.recipe');
-  #data;
-  #errorMessage = 'We could not find that recipe. Please try another one!';
-  #message = '';
+// Vamos a usas CLASES para las vistas, crearemos una clase que contendrá el elemento padre de esa vista en el dom y los datos, luego tendrá un método llamado render que tendrá los datos y un método privado que devolverá el contenido en el DOM.
+// Utilizaremos una extension de la clase View y pondremos las vistas iguales en el Fichero View.
+
+class RecipeView extends View {
+  _data;
+  //Vamos a cambiar el símbolo de privado de Babel y Parcel por el de Javascript.
+  /*
+  _parentElement = document.querySelector('.recipe');
+  _data;
+  _errorMessage = 'We could not find that recipe. Please try another one!';
+  _message = '';
 
   render(data) {
-    this.#data = data;
-    const markup = this.#generateMarkup();
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    this._data = data;
+    const markup = this._generateMarkup();
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  #clear() {
-    this.#parentElement.innerHTML = '';
+  _clear() {
+    this._parentElement.innerHTML = '';
   }
 
   // Diseño de nuestro Spinner
@@ -38,11 +45,11 @@ class RecipeView {
         </svg>
       </div> 
     `;
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
   // Manejo de Errores de rechazo
-  renderError(message = this.#errorMessage) {
+  renderError(message = this._errorMessage) {
     const markup = `
     <div class="error">
       <div>
@@ -52,11 +59,11 @@ class RecipeView {
       </div>
       <p>${message}</p>
     </div>`;
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    this._clear();
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
   // Manejo de Errores de éxito
-  renderError(message = this.#message) {
+  renderError(message = this._message) {
     const markup = `
     <div class="recipe">
     <div class="message">
@@ -70,22 +77,22 @@ class RecipeView {
     this.#clear();
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
-
+*/
   // Manejo de Eventos
   addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
   }
 
   // Mostrar nuestra receta
-  #generateMarkup() {
+  _generateMarkup() {
     //console.log(this.#data);
     return `
         <figure class="recipe__fig">
-          <img src="${this.#data.image}" alt="${
-      this.#data.title
+          <img src="${this._data.image}" alt="${
+      this._data.title
     }" class="recipe__img" />
           <h1 class="recipe__title">
-            <span>${this.#data.title}</span>
+            <span>${this._data.title}</span>
           </h1>
         </figure>
     
@@ -95,7 +102,7 @@ class RecipeView {
               <use href="${icons}#icon-clock"></use>
             </svg>
             <span class="recipe__info-data recipe__info-data--minutes">${
-              this.#data.cookigTime
+              this._data.cookigTime
             }</span>
             <span class="recipe__info-text">minutes</span>
           </div>
@@ -104,7 +111,7 @@ class RecipeView {
               <use href="${icons}#icon-users"></use>
             </svg>
             <span class="recipe__info-data recipe__info-data--people">${
-              this.#data.servings
+              this._data.servings
             }</span>
             <span class="recipe__info-text">servings</span>
     
@@ -137,7 +144,7 @@ class RecipeView {
         <div class="recipe__ingredients">
           <h2 class="heading--2">Recipe ingredients</h2>      
           <ul class="recipe__ingredient-list">
-          ${this.#data.ingredients.map(this.#generateMarkupIngredient).join('')}
+          ${this._data.ingredients.map(this._generateMarkupIngredient).join('')}
             
     
             
@@ -149,13 +156,13 @@ class RecipeView {
           <p class="recipe__directions-text">
             This recipe was carefully designed and tested by
             <span class="recipe__publisher">${
-              this.#data.publisher
+              this._data.publisher
             }</span>. Please check out
             directions at their website.
           </p>
           <a
             class="btn--small recipe__btn"
-            href="${this.#data.sourceUrl}"
+            href="${this._data.sourceUrl}"
             target="_blank"
           >
             <span>Directions</span>
@@ -167,7 +174,7 @@ class RecipeView {
   }
 
   // Reformatear nuestras cantidades de ingredientes
-  #generateMarkupIngredient(ing) {
+  _generateMarkupIngredient(ing) {
     return `
       <li class="recipe__ingredient">
         <svg class="recipe__icon">

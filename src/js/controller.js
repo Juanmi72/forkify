@@ -9,6 +9,9 @@ import recipeView from './views/recipeview.js';
 // Importamos desde searchview.js el input de nuestro DOM
 import searchView from './views/searchview.js';
 
+// Importamos la vista de la lista de resultados
+import resultsView from './views/resultsview.js';
+
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 import icons from 'url:../img/icons.svg'; // Para la version 2 de Parcel.
@@ -18,9 +21,9 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 //const recipeContainer = document.querySelector('.recipe');
-const recipesContainer = document.querySelector('.search-results');
+//const recipesContainer = document.querySelector('.search-results');
 //const inputSearch = document.querySelector('.search__field');
-const btnSearch = document.querySelector('.search__btn');
+//const btnSearch = document.querySelector('.search__btn');
 
 // Nos la llevamos a helpers.js
 
@@ -207,7 +210,7 @@ const controlRecipes = async function () {
 const controlSearchResults = async function () {
   try {
     // Refactorizamos
-    recipeView.renderSpinner();
+    resultsView.renderSpinner();
     // 1) Obtener cadena que vamos a consultar
     const query = searchView.getQuery();
 
@@ -218,7 +221,8 @@ const controlSearchResults = async function () {
     console.log(model.state.search.results);
 
     // 3) Mostrar resultados
-    //recipeView.render(model.state.recipes);
+
+    resultsView.render(model.state.search.results);
 
     /*
     //renderSpinner(recipesContainer);

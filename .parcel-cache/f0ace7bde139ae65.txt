@@ -1,4 +1,4 @@
-7666
+7668
 139E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\htmlnano\lib\presets133127670008466982 1
 135E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\svgo\lib\svgo.js133127670048650330 0
 160E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\lmdb\node_modules\node-addon-api\index.js133127669993855380 0
@@ -45,7 +45,7 @@
 144E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\terser\lib\utils\index.js133127670019710564 0
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\array\entries.js133128447815103970 0
 156E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\posthtml\node_modules\posthtml-parser133127669836502605 1
-110E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist133137181559115820 1
+110E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist133140583383262543 1
 155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\actual\string\virtual\big.js133128447810016894 0
 151E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\number\is-finite.js133128447838836346 0
 145E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\v8-compile-cache\README.md133127669817936555 0
@@ -181,6 +181,9 @@
 125E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\sass\_base.scss132562249780000000 0
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\string\repeat.js133128447853559140 0
 138E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\term-size\readme.md133127669949811852 0
+133E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\views\resultsview.js133140581077852874 0
+166E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\modules\esnext.async-iterator.reduce.js133128447822878219 0
+153E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\pad-end.js133128447850780739 0
 131E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\sass\_components.scss132562249780000000 0
 153E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\terser\lib\compress\reduce-vars.js133127670035397948 0
 134E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\lmdb\index.d.ts133127670070805588 0
@@ -197,7 +200,7 @@
 154E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\iterator\reduce.js133128447852989468 0
 133E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\dom-serializer133127669964084232 1
 137E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\clone\package.json133127669729152667 0
-132E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\views\recipeview.js133137072263205387 0
+132E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\views\recipeview.js133140581125511939 0
 142E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\map.js133128447844862043 0
 140E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\number133128447861794138 1
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\caniuse-lite\data\regions\TH.js133127670139905872 0
@@ -249,13 +252,13 @@
 157E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\svgo\plugins\convertEllipseToCircle.js133127669996963597 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\string\blink.js133128447810466635 0
 153E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\type-fest\ts41\delimiter-case.d.ts133127669966392903 0
-129E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\icons.dfd7a6db.svg133137181557716623 0
-126E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\controller.js133137181502468825 0
+129E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\icons.dfd7a6db.svg133140580935384349 0
+126E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\controller.js133140581196182681 0
 152E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\instance\fill.js133128447826146339 0
 142E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\weak-set133128447837726980 1
 156E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\source-map\lib\source-map-consumer.js133127669960716172 0
 128E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\yaml\dist133127670033059313 1
-123E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\helpers.js133136265850103675 0
+123E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\helpers.js133140581247365320 0
 155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\css-what\lib\commonjs\stringify.d.ts133127670003130049 0
 162E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\caniuse-lite\data\features\passwordrules.js133127670116129557 0
 157E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\actual\instance\to-reversed.js133128447862063976 0
@@ -268,7 +271,7 @@
 143E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\terser\tools\domprops.js133127670008586913 0
 155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\modules\es.object.has-own.js133128447819610095 0
 160E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\caniuse-lite\data\features\canvas-text.js133127670056783653 0
-121E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\model.js133137174560060933 0
+121E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\model.js133140581278950816 0
 174E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@jridgewell\trace-mapping\dist\types\binary-search.d.ts133127669957208185 0
 142E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\core\index.d.ts133127670078800994 0
 158E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\actual\reflect\to-string-tag.js133128447862723593 0
@@ -284,14 +287,25 @@
 155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\cosmiconfig\dist\cacheWrapper.js.map133127669989248027 0
 159E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\actual\array\virtual\group-by.js133128447831843071 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\actual\array\values.js133128447866251567 0
-118E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\views133137095417257357 1
+118E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\views133140522107623996 1
 159E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\lmdb\dependencies\lmdb-data-v1\libraries133127669731242212 1
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\modules\es.unescape.js133128447822198607 0
 146E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\to-regex-range\package.json133127673524749621 0
 147E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\es\symbol\key-for.js133128447840815206 0
 145E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\parent-module\package.json133127669727942120 0
 154E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\type-fest\source\tsconfig-json.d.ts133127670018940959 0
-132E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\views\searchView.js133137181942792210 0
+132E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\views\searchView.js133140581111369712 0
+156E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\instance\reduce-right.js133128447852789585 0
+154E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\dom-exception\index.js133128447836897457 0
+143E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\node-gyp-build\README.md133127669864947159 0
+155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\is-disjoint-from.js133128447838666444 0
+158E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\type-fest\source\async-return-type.d.ts133127669810929127 0
+124E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\chalk133127669867025960 1
+152E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\css-tree\lib\syntax\pseudo\common133127670061470959 1
+123E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\img\icons.svg132562249780000000 0
+156E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\utils\test\collection.test.js133127669988338565 0
+126E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\js\views\View.js133140581025702458 0
+144E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\index.js133128447837227269 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\csso\lib\replace\Percentage.js133127670021039758 0
 125E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\img\favicon.png132562249780000000 0
 143E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\typed-array133128447867370924 1
@@ -306,14 +320,6 @@
 162E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\proposals\string-left-right-trim.js133128447857556843 0
 129E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\yaml\types133127670023178526 1
 157E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\modules\es.typed-array.fill.js133128447821538987 0
-156E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\instance\reduce-right.js133128447852789585 0
-154E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\dom-exception\index.js133128447836897457 0
-143E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\node-gyp-build\README.md133127669864947159 0
-155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\is-disjoint-from.js133128447838666444 0
-158E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\type-fest\source\async-return-type.d.ts133127669810929127 0
-124E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\chalk133127669867025960 1
-152E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\css-tree\lib\syntax\pseudo\common133127670061470959 1
-123E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\img\icons.svg132562249780000000 0
 122E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\src\img\logo.png132562249780000000 0
 151E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\source-map\dist\types.js133127669991576692 0
 132E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\color-convert133127669859133801 1
@@ -1016,11 +1022,11 @@
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\string\search.js133128447854638525 0
 139E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\terser\lib\output.js133127670031430235 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\source-map-js\lib\array-set.js133127673525888968 0
-157E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\css-tree\lib\syntax\node\StyleSheet.js133127670063929544 0
-149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\actual\array\splice.js133128447856667355 0
-147E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\math\clz32.js133128447811346128 0
 145E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\node-gyp-build\optional.js133127669811818614 0
 159E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\number\is-safe-integer.js133128447839276093 0
+149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\actual\array\splice.js133128447856667355 0
+147E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\math\clz32.js133128447811346128 0
+157E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\css-tree\lib\syntax\node\StyleSheet.js133127670063929544 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\core\src\loadDotEnv.js133127670054135168 0
 162E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\modules\es.array.find-last-index.js133128447815633666 0
 154E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\modules\es.string.substr.js133128447821049272 0
@@ -1398,8 +1404,6 @@
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\keys.js133128447841214978 0
 173E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\lmdb\dependencies\lmdb\libraries\liblmdb\mtest_remap.c133127670041064699 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\type-fest\source\value-of.d.ts133127670021509488 0
-159E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\node-resolver-core\src\_empty.js133127669810189555 0
-159E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\array-buffer\is-view.js133128447839485971 0
 160E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\source-map\dist\SourceMap.js.flow133127669751354942 0
 144E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\tslib\CopyrightNotice.txt133127669959696751 0
 135E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\msgpackr\LICENSE133127669728171964 0
@@ -1661,10 +1665,6 @@
 165E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\modules\esnext.reflect.has-metadata.js133128447824277415 0
 153E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\core\lib\InternalConfig.js133127670051986589 0
 156E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\svgo\plugins\moveGroupAttrsToElems.js133127670017301904 0
-161E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\svgo\plugins\removeAttributesBySelector.js133127670023578296 0
-176E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\optimizer-image\parcel-image.linux-arm64-gnu.node133127670047490995 0
-147E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\source-map-support\README.md133127669887473864 0
-142E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance133128447866521412 1
 179E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\htmlnano\docs\versioned_docs\version-2.0.0\060-contribute.md133127670043283416 0
 158E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\number\max-safe-integer.js133128447845661583 0
 144E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\core\lib\types.js133127670071515185 0
@@ -1672,6 +1672,10 @@
 142E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\source-map-js\README.md133127673527418089 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\svgo\plugins\removeUnusedNS.js133127670039665494 0
 146E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\object\seal.js133128447854448629 0
+176E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\optimizer-image\parcel-image.linux-arm64-gnu.node133127670047490995 0
+147E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\source-map-support\README.md133127669887473864 0
+142E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance133128447866521412 1
+161E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\svgo\plugins\removeAttributesBySelector.js133127670023578296 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\core\src\Dependency.js133127670039405645 0
 155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\reflect\get-metadata.js133128447831013542 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\svgo\plugins\removeComments.js133127670030300877 0
@@ -3193,10 +3197,10 @@
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\string\anchor.js133128447807768187 0
 153E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\array\virtual\some.js133128447856207616 0
 139E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\csso\lib\restructure133127670032989336 1
-172E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\reflect\get-own-property-descriptor.js133128447831213426 0
-157E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\array-buffer\index.js133128447836387758 0
 136E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\csso\lib\usage.js133127670031420234 0
 148E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\string\cooked.js133128447812625394 0
+157E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\array-buffer\index.js133128447836387758 0
+172E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\reflect\get-own-property-descriptor.js133128447831213426 0
 155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\transformer-raw\package.json133127669827005293 0
 156E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\csso\lib\restructure\1-mergeAtrule.js133127669751205025 0
 148E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\csso\lib\restructure\utils.js133127670033439081 0
@@ -3231,7 +3235,7 @@
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\string\substr.js133128447860115097 0
 142E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\csso\lib\replace\Url.js133127670031210356 0
 145E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\array\fill.js133128447826176327 0
-129E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\icons.21bad73c.svg133137181557706631 0
+129E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\icons.21bad73c.svg133140580935384349 0
 143E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\packager-css\src133127669817306916 1
 154E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\csso\lib\replace\property\border.js133127669991017016 0
 152E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\csso\lib\replace\property\font.js133127670013074336 0
@@ -3398,7 +3402,6 @@
 176E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\modules\es.reflect.get-own-property-descriptor.js133128447820159782 0
 141E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\btoa.js133128447810656527 0
 148E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\css-tree\lib\parser\create.js133127670003539818 0
-146E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\math\cbrt.js133128447810996327 0
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\css-tree\lib\parser\sequence.js133127670062000649 0
 146E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\css-tree\lib\lexer\error.js133127670031420234 0
 173E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@swc\helpers\lib\_class_static_private_field_update.js133127670013104314 0
@@ -3770,6 +3773,7 @@
 164E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\core\lib\public\MutableBundleGraph.js133127670056683710 0
 164E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\number\virtual\to-precision.js133128447861804142 0
 147E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\math\atanh.js133128447809946934 0
+146E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\math\cbrt.js133128447810996327 0
 159E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\transformer-js\src\loadNative.js133127669951660788 0
 147E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\math\expm1.js133128447825966442 0
 153E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\core\lib\serializerCore.js133127670068446942 0
@@ -3820,7 +3824,7 @@
 152E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\instance\includes.js133128447835008549 0
 154E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\for-each.js133128447829574376 0
 154E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\includes.js133128447835148464 0
-133E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.f7626f62.css.map133137181558875956 0
+133E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.f7626f62.css.map133140580935644202 0
 154E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\index-of.js133128447835428304 0
 179E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@msgpackr-extract\msgpackr-extract-win32-x64\node.abi93.node133127669819036760 0
 159E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\last-index-of.js133128447841434856 0
@@ -3830,8 +3834,6 @@
 170E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\workers\test\integration\workerfarm\echo.js133127669991536718 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\map.js133128447844902020 0
 155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\match-all.js133128447845161872 0
-166E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\modules\esnext.async-iterator.reduce.js133128447822878219 0
-153E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\pad-end.js133128447850780739 0
 155E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\pad-start.js133128447851030594 0
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\caniuse-lite\data\regions\GF.js133127670093852341 0
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\stable\instance\push.js133128447852209914 0
@@ -4942,8 +4944,6 @@
 144E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\every.js133128447825846511 0
 145E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\filter.js133128447826815955 0
 143E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\from.js133128447830433874 0
-156E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\utils\test\collection.test.js133127669988338565 0
-144E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\index.js133128447837227269 0
 151E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\intersection.js133128447838346627 0
 143E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\join.js133128447840695274 0
 141E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\full\set\of.js133128447850465860 0
@@ -5534,6 +5534,8 @@
 156E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\caniuse-lite\data\features\portals.js133127670120497025 0
 158E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\async-iterator\some.js133128447856147655 0
 158E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\async-iterator\take.js133128447860544851 0
+159E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\@parcel\node-resolver-core\src\_empty.js133127669810189555 0
+159E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\array-buffer\is-view.js133128447839485971 0
 157E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\array-buffer\slice.js133128447855647941 0
 147E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\array\at.js133128447809627121 0
 151E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\features\array\concat.js133128447812025737 0
@@ -5782,7 +5784,7 @@
 146E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\es\object\values.js133128447866351508 0
 151E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\es\number\constructor.js133128447812335560 0
 147E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\es\number\epsilon.js133128447815203910 0
-121E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.html133137174580910826 0
+121E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.html133140580935384349 0
 145E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\es\number\index.js133128447836147892 0
 149E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\es\number\is-finite.js133128447838816357 0
 150E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\core-js\es\number\is-integer.js133128447838966271 0
@@ -7660,8 +7662,8 @@
 132E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\.bin\svgo.cmd133127670191476229 0
 134E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\.bin\terser.cmd133127670191476229 0
 134E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\node_modules\.bin\terser.ps1133127670191476229 0
-131E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\favicon.8b2f57bf.png133137181557786582 0
-128E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.e37f48ea.js133137181558006453 0
-132E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.e37f48ea.js.map133137181558446214 0
-129E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.f7626f62.css133137181558106402 0
-128E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\logo.726d37a8.png133137181557816566 0
+131E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\favicon.8b2f57bf.png133140580935304403 0
+128E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.e37f48ea.js133140584333301257 0
+132E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.e37f48ea.js.map133140583383202567 0
+129E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\index.f7626f62.css133140580935304403 0
+128E:\Datos\Personales\Formacion\UDEMY\Curso Javascript\complete-javascript-course-master\18-forkify\starter\dist\logo.726d37a8.png133140580935324396 0
