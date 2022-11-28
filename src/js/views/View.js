@@ -4,6 +4,7 @@
 import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 
 export default class View {
+  //_parentElement = document.querySelector('.results');
   _data;
 
   render(data) {
@@ -48,7 +49,7 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
   // Manejo de Errores de éxito
-  renderError(message = this._message) {
+  renderMessage(message = this._message) {
     const markup = `
     <div class="recipe">
     <div class="message">

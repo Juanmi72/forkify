@@ -807,7 +807,7 @@ const init = function() {
 };
 init();
 
-},{"core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1","./views/searchview.js":"furg1","./views/resultsview.js":"4wEfE","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","regenerator-runtime":"dXNgZ"}],"gSXXb":[function(require,module,exports) {
+},{"core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1","./views/searchview.js":"furg1","./views/resultsview.js":"4wEfE","regenerator-runtime/runtime":"dXNgZ","regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gSXXb":[function(require,module,exports) {
 var global = require("../internals/global");
 var DESCRIPTORS = require("../internals/descriptors");
 var defineBuiltInAccessor = require("../internals/define-built-in-accessor");
@@ -3232,6 +3232,7 @@ parcelHelpers.defineInteropFlag(exports);
 var _iconsSvg = require("url:../../img/icons.svg"); // Para la version 2 de Parcel.
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
+    //_parentElement = document.querySelector('.results');
     _data;
     render(data) {
         // Comprobamos si no hay datos O si los datos son una matriz de resultados y ésta está vacía,  Si se cumple alguna de las dos mostramos el error.
@@ -3271,7 +3272,7 @@ class View {
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
     }
     // Manejo de Errores de éxito
-    renderError(message = this._message) {
+    renderMessage(message = this._message) {
         const markup = `
     <div class="recipe">
     <div class="message">
@@ -3291,10 +3292,9 @@ exports.default = View;
 },{"url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"furg1":[function(require,module,exports) {
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
+//import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _iconsSvg = require("url:../../img/icons.svg"); // Para la version 2 de Parcel.
-var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class SearchView {
     _parentElement = document.querySelector(".search");
     // es el valor del input de nuestra consulta de recetas.
@@ -3323,7 +3323,7 @@ class SearchView {
 }
 exports.default = new SearchView();
 
-},{"url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4wEfE":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4wEfE":[function(require,module,exports) {
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 //import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -3331,7 +3331,7 @@ parcelHelpers.defineInteropFlag(exports);
 var _viewJs = require("./View.js");
 var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 class ResultsView extends (0, _viewJsDefault.default) {
-    _ParentElement = document.querySelector(".results");
+    _parentElement = document.querySelector(".results");
     _errorMessage = "No recipes found for your query! Please try again ;)";
     _message = "";
     _generateMarkup() {
@@ -3355,6 +3355,6 @@ class ResultsView extends (0, _viewJsDefault.default) {
 }
 exports.default = new ResultsView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map
