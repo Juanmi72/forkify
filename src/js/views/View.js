@@ -4,12 +4,13 @@
 import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 
 export default class View {
-  _parentElement = document.querySelector('.recipe');
-
-  _errorMessage = 'We could not find that recipe. Please try another one!';
-  _message = '';
+  _data;
 
   render(data) {
+    // Comprobamos si no hay datos O si los datos son una matriz de resultados y ésta está vacía,  Si se cumple alguna de las dos mostramos el error.
+    if (!data || (Array.isArray(data) && data.length === 0))
+      return this.renderError();
+
     this._data = data;
     const markup = this._generateMarkup();
     this._clear();

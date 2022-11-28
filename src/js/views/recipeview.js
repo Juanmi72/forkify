@@ -17,10 +17,12 @@ import View from './View.js';
 // Utilizaremos una extension de la clase View y pondremos las vistas iguales en el Fichero View.
 
 class RecipeView extends View {
-  _data;
   //Vamos a cambiar el símbolo de privado de Babel y Parcel por el de Javascript.
-  /*
+  //_data;
   _parentElement = document.querySelector('.recipe');
+  _errorMessage = 'We could not find that recipe. Please try another one!';
+  _message = '';
+  /*
   _data;
   _errorMessage = 'We could not find that recipe. Please try another one!';
   _message = '';
@@ -130,9 +132,6 @@ class RecipeView extends View {
           </div>
     
           <div class="recipe__user-generated">
-            <svg>
-              <use href="${icons}#icon-user"></use>
-            </svg>
           </div>
           <button class="btn--round">
             <svg class="">

@@ -547,11 +547,9 @@ var _searchviewJsDefault = parcelHelpers.interopDefault(_searchviewJs);
 // Importamos la vista de la lista de resultados
 var _resultsviewJs = require("./views/resultsview.js");
 var _resultsviewJsDefault = parcelHelpers.interopDefault(_resultsviewJs);
-// Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
-//import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
-var _iconsSvg = require("url:../img/icons.svg"); // Para la version 2 de Parcel.
-var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _runtime = require("regenerator-runtime/runtime");
+var _regeneratorRuntime = require("regenerator-runtime");
+if (module.hot) module.hot.accept();
 //const recipeContainer = document.querySelector('.recipe');
 //const recipesContainer = document.querySelector('.search-results');
 //const inputSearch = document.querySelector('.search__field');
@@ -809,74 +807,7 @@ const init = function() {
 };
 init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../img/icons.svg":"loVOp","core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","regenerator-runtime/runtime":"dXNgZ","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1","./views/searchview.js":"furg1","./views/resultsview.js":"4wEfE"}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"loVOp":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("hWUTQ") + "icons.dfd7a6db.svg" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
-"use strict";
-var bundleURL = {};
-function getBundleURLCached(id) {
-    var value = bundleURL[id];
-    if (!value) {
-        value = getBundleURL();
-        bundleURL[id] = value;
-    }
-    return value;
-}
-function getBundleURL() {
-    try {
-        throw new Error();
-    } catch (err) {
-        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
-        if (matches) // The first two stack frames will be this function and getBundleURLCached.
-        // Use the 3rd one, which will be a runtime in the original bundle.
-        return getBaseURL(matches[2]);
-    }
-    return "/";
-}
-function getBaseURL(url) {
-    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
-} // TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
-function getOrigin(url) {
-    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
-    if (!matches) throw new Error("Origin not found");
-    return matches[0];
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-exports.getOrigin = getOrigin;
-
-},{}],"gSXXb":[function(require,module,exports) {
+},{"core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1","./views/searchview.js":"furg1","./views/resultsview.js":"4wEfE","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","regenerator-runtime":"dXNgZ"}],"gSXXb":[function(require,module,exports) {
 var global = require("../internals/global");
 var DESCRIPTORS = require("../internals/descriptors");
 var defineBuiltInAccessor = require("../internals/define-built-in-accessor");
@@ -2083,7 +2014,91 @@ $({
     setImmediate: setImmediate
 });
 
-},{"../internals/export":"dIGt4","../internals/global":"i8HOC","../internals/task":"7jDg7"}],"dXNgZ":[function(require,module,exports) {
+},{"../internals/export":"dIGt4","../internals/global":"i8HOC","../internals/task":"7jDg7"}],"Y4A21":[function(require,module,exports) {
+// En la arquitectura MVC Model-View-Controler este archivo contendrá todos los modelos de la aplicación.(la receta, la búsqueda, los marcadores, etc...)
+// Importamos varias cosas
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "state", ()=>state);
+parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
+parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
+var _regeneratorRuntime = require("regenerator-runtime");
+var _configJs = require("./config.js");
+var _helpersJs = require("./helpers.js");
+const state = {
+    recipe: {},
+    search: {
+        query: "",
+        results: []
+    }
+};
+const loadRecipe = async function(id) {
+    // Esta función cambiará nuestro estado global que contendrá la recipe y lo que hará serar cargar la receta con Fetch, que al ser una promesa vamos a manejar sus errores
+    // 1) Loading recipe
+    try {
+        // Estas lineas las pasamos a una función en helpers.js
+        // const res = await fetch(
+        //   `${API_URL}/${id}`
+        //   //'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
+        // );
+        // const data = await res.json();
+        // console.log(res, data.data.recipe);
+        // // En la API tenemos una propiedad 'ok' que si es false es porque se ha producido un error y nos vale para generar un error nosotros.
+        // if (!res.ok) throw Error(`${data.message} ${res.status}`);
+        // Refactorización hacia helpers.js
+        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_URL)}/${id}`);
+        // reformateamos los datos recibidos
+        const { recipe  } = data.data;
+        state.recipe = {
+            id: recipe.id,
+            title: recipe.title,
+            publisher: recipe.publisher,
+            sourceUrl: recipe.source_url,
+            image: recipe.image_url,
+            servings: recipe.servings,
+            cookingTime: recipe.cooking_time,
+            ingredients: recipe.ingredients
+        };
+    } catch (err) {
+        // Temp error handling
+        console.log(`${err} 💥💥💥💥💥`);
+        throw err;
+    }
+};
+const loadSearchResults = async function(query) {
+    //const inputSearch = document.querySelector('.search__field');
+    try {
+        // const res = await fetch(`${API_URL}?search=${inputSearch.value}`);
+        // const data = await res.json();
+        //console.log(res, data.data);
+        //console.log(data.data.recipes);
+        //console.log(data.data.recipes[0]);
+        // Refactorizacion llamada a lista de recetas
+        state.search.query = query;
+        console.log(query);
+        //const data = await getJSON(`${API_URL}?search=${inputSearch.value}`);
+        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_URL)}?search=${query}`);
+        //console.log(data.data.recipes);
+        // reformateamos los datos recibidos y mapeamos la lista de encontrados
+        state.search.results = data.data.recipes.map(function(el) {
+            //let recipes = el;
+            //console.log(el);
+            return {
+                id: el.id,
+                title: el.title,
+                publisher: el.publisher,
+                sourceUrl: `${0, _configJs.API_URL}/${el.id}`,
+                image: el.image_url
+            };
+        });
+    //console.log(state.search.results);
+    } catch (err) {
+        console.log(`${err} 💥💥💥💥💥`);
+        throw err;
+    }
+};
+
+},{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -2664,91 +2679,7 @@ try {
     else Function("r", "regeneratorRuntime = r")(runtime);
 }
 
-},{}],"Y4A21":[function(require,module,exports) {
-// En la arquitectura MVC Model-View-Controler este archivo contendrá todos los modelos de la aplicación.(la receta, la búsqueda, los marcadores, etc...)
-// Importamos varias cosas
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "state", ()=>state);
-parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
-parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
-var _regeneratorRuntime = require("regenerator-runtime");
-var _configJs = require("./config.js");
-var _helpersJs = require("./helpers.js");
-const state = {
-    recipe: {},
-    search: {
-        query: "",
-        results: []
-    }
-};
-const loadRecipe = async function(id) {
-    // Esta función cambiará nuestro estado global que contendrá la recipe y lo que hará serar cargar la receta con Fetch, que al ser una promesa vamos a manejar sus errores
-    // 1) Loading recipe
-    try {
-        // Estas lineas las pasamos a una función en helpers.js
-        // const res = await fetch(
-        //   `${API_URL}/${id}`
-        //   //'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
-        // );
-        // const data = await res.json();
-        // console.log(res, data.data.recipe);
-        // // En la API tenemos una propiedad 'ok' que si es false es porque se ha producido un error y nos vale para generar un error nosotros.
-        // if (!res.ok) throw Error(`${data.message} ${res.status}`);
-        // Refactorización hacia helpers.js
-        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_URL)}/${id}`);
-        // reformateamos los datos recibidos
-        const { recipe  } = data.data;
-        state.recipe = {
-            id: recipe.id,
-            title: recipe.title,
-            publisher: recipe.publisher,
-            sourceUrl: recipe.source_url,
-            image: recipe.image_url,
-            servings: recipe.servings,
-            cookingTime: recipe.cooking_time,
-            ingredients: recipe.ingredients
-        };
-    } catch (err) {
-        // Temp error handling
-        console.log(`${err} 💥💥💥💥💥`);
-        throw err;
-    }
-};
-const loadSearchResults = async function(query) {
-    //const inputSearch = document.querySelector('.search__field');
-    try {
-        // const res = await fetch(`${API_URL}?search=${inputSearch.value}`);
-        // const data = await res.json();
-        //console.log(res, data.data);
-        //console.log(data.data.recipes);
-        //console.log(data.data.recipes[0]);
-        // Refactorizacion llamada a lista de recetas
-        state.search.query = query;
-        console.log(query);
-        //const data = await getJSON(`${API_URL}?search=${inputSearch.value}`);
-        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_URL)}?search=${query}`);
-        //console.log(data.data.recipes);
-        // reformateamos los datos recibidos y mapeamos la lista de encontrados
-        state.search.results = data.data.recipes.map(function(el) {
-            //let recipes = el;
-            //console.log(el);
-            return {
-                id: el.id,
-                title: el.title,
-                publisher: el.publisher,
-                sourceUrl: `${0, _configJs.API_URL}/${el.id}`,
-                image: el.image_url
-            };
-        });
-    //console.log(state.search.results);
-    } catch (err) {
-        console.log(`${err} 💥💥💥💥💥`);
-        throw err;
-    }
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
+},{}],"k5Hzs":[function(require,module,exports) {
 // Se utiliza para poner todas las variables que deberían ser constantes en cualquier proyecto y reutilizarse en todo el proyecto.
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -2757,7 +2688,37 @@ parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC);
 const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes";
 const TIMEOUT_SEC = 10;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hGI1E":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"hGI1E":[function(require,module,exports) {
 // Este fichero contendrá una serie de funciones que vamos a estar utilizando todo el tiempo en otros módulos.
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -2788,7 +2749,7 @@ const getJSON = async function(url) {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config.js":"k5Hzs"}],"8Jlc1":[function(require,module,exports) {
+},{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8Jlc1":[function(require,module,exports) {
 // En la arquitectura MVC Model-View-Controler este archivo contendrá la vista de la receta y tendremos otros ficheros para las otras vistas.
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
@@ -2807,10 +2768,12 @@ var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 // Vamos a usas CLASES para las vistas, crearemos una clase que contendrá el elemento padre de esa vista en el dom y los datos, luego tendrá un método llamado render que tendrá los datos y un método privado que devolverá el contenido en el DOM.
 // Utilizaremos una extension de la clase View y pondremos las vistas iguales en el Fichero View.
 class RecipeView extends (0, _viewJsDefault.default) {
-    _data;
     //Vamos a cambiar el símbolo de privado de Babel y Parcel por el de Javascript.
+    //_data;
+    _parentElement = document.querySelector(".recipe");
+    _errorMessage = "We could not find that recipe. Please try another one!";
+    _message = "";
     /*
-  _parentElement = document.querySelector('.recipe');
   _data;
   _errorMessage = 'We could not find that recipe. Please try another one!';
   _message = '';
@@ -2915,9 +2878,6 @@ class RecipeView extends (0, _viewJsDefault.default) {
           </div>
     
           <div class="recipe__user-generated">
-            <svg>
-              <use href="${0, _iconsSvgDefault.default}#icon-user"></use>
-            </svg>
           </div>
           <button class="btn--round">
             <svg class="">
@@ -2974,7 +2934,44 @@ class RecipeView extends (0, _viewJsDefault.default) {
 // Exportamos una nueva instancia de la clase RecipeView.
 exports.default = new RecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/icons.svg":"loVOp","fractional":"3SU56","./View.js":"5cUXS"}],"3SU56":[function(require,module,exports) {
+},{"url:../../img/icons.svg":"loVOp","fractional":"3SU56","./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"loVOp":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("hWUTQ") + "icons.dfd7a6db.svg" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
+"use strict";
+var bundleURL = {};
+function getBundleURLCached(id) {
+    var value = bundleURL[id];
+    if (!value) {
+        value = getBundleURL();
+        bundleURL[id] = value;
+    }
+    return value;
+}
+function getBundleURL() {
+    try {
+        throw new Error();
+    } catch (err) {
+        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
+        if (matches) // The first two stack frames will be this function and getBundleURLCached.
+        // Use the 3rd one, which will be a runtime in the original bundle.
+        return getBaseURL(matches[2]);
+    }
+    return "/";
+}
+function getBaseURL(url) {
+    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
+} // TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
+function getOrigin(url) {
+    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
+    if (!matches) throw new Error("Origin not found");
+    return matches[0];
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+exports.getOrigin = getOrigin;
+
+},{}],"3SU56":[function(require,module,exports) {
 /*
 fraction.js
 A Javascript fraction library.
@@ -3235,10 +3232,10 @@ parcelHelpers.defineInteropFlag(exports);
 var _iconsSvg = require("url:../../img/icons.svg"); // Para la version 2 de Parcel.
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
-    _parentElement = document.querySelector(".recipe");
-    _errorMessage = "We could not find that recipe. Please try another one!";
-    _message = "";
+    _data;
     render(data) {
+        // Comprobamos si no hay datos O si los datos son una matriz de resultados y ésta está vacía,  Si se cumple alguna de las dos mostramos el error.
+        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
         this._clear();
@@ -3291,7 +3288,7 @@ class View {
 }
 exports.default = View;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/icons.svg":"loVOp"}],"furg1":[function(require,module,exports) {
+},{"url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"furg1":[function(require,module,exports) {
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -3299,27 +3296,26 @@ parcelHelpers.defineInteropFlag(exports);
 var _iconsSvg = require("url:../../img/icons.svg"); // Para la version 2 de Parcel.
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class SearchView {
-    _parentEl = document.querySelector(".search");
+    _parentElement = document.querySelector(".search");
     // es el valor del input de nuestra consulta de recetas.
     getQuery() {
-        const query = this.#parentEl.querySelector(".search__field").value;
+        const query = this._parentElement.querySelector(".search__field").value;
         this._clearInput();
         return query;
     }
     render(data) {
-        console.log(this.#data);
-        this.#data = data;
-        this.#data.forEach(function() {
+        console.log(this._data);
+        this._data = data;
+        this._data.forEach(function() {
             const markup = this._generateMarkup();
-            this._parentElResults.insertAdjacentHTML("afterbegin", markup);
+            this._parentElement.insertAdjacentHTML("afterbegin", markup);
         });
-    //this.#clear();
     }
     _clearInput() {
-        this._parentEl.querySelector(".search__field").value = "";
+        this._parentElement.querySelector(".search__field").value = "";
     }
     addHandlerSearch(handler) {
-        this._parentEl.addEventListener("submit", function(e) {
+        this._parentElement.addEventListener("submit", function(e) {
             e.preventDefault();
             handler();
         });
@@ -3327,33 +3323,31 @@ class SearchView {
 }
 exports.default = new SearchView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/icons.svg":"loVOp"}],"4wEfE":[function(require,module,exports) {
+},{"url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4wEfE":[function(require,module,exports) {
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
+//import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _iconsSvg = require("url:../../img/icons.svg"); // Para la version 2 de Parcel.
-var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
-class ResultsView extends View {
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+class ResultsView extends (0, _viewJsDefault.default) {
     _ParentElement = document.querySelector(".results");
+    _errorMessage = "No recipes found for your query! Please try again ;)";
+    _message = "";
     _generateMarkup() {
         console.log(this._data);
         return this._data.map(this._generateMarkupPreview).join("");
     }
-    _generateMarkupPreview() {
+    _generateMarkupPreview(result) {
         return `
     <li class="preview">
-        <a class="preview__link preview__link--active" href="#${this._data.id}">
+        <a class="preview__link" href="#${result.id}">
         <figure class="preview__fig">
-            <img src="${this._data.image}" alt="" />
+            <img src="${result.image}" alt="${result.title}" />
         </figure>
         <div class="preview__data">
-            <h4 class="preview__title">${this._data.title} ...</h4>
-            <p class="preview__publisher">${this._data.publisher}</p>
-            <div class="preview__user-generated">
-            <svg>
-                <use href="${0, _iconsSvgDefault.default}#icon-user"></use>
-            </svg>
-            </div>
+            <h4 class="preview__title">${result.title} ...</h4>
+            <p class="preview__publisher">${result.publisher}</p>
         </div>
         </a>
     </li>`;
@@ -3361,6 +3355,6 @@ class ResultsView extends View {
 }
 exports.default = new ResultsView();
 
-},{"url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map

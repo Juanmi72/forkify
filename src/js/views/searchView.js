@@ -1,6 +1,6 @@
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
-import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
+//import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 
 class SearchView {
   _parentElement = document.querySelector('.search');

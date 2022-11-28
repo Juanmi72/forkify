@@ -14,11 +14,16 @@ import resultsView from './views/resultsview.js';
 
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
-import icons from 'url:../img/icons.svg'; // Para la version 2 de Parcel.
+//import icons from 'url:../img/icons.svg'; // Para la version 2 de Parcel.
 
 // Esta importación es para que nuestro proyecto funcione en navegadores que no soporten ES6 y async/await.
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import { async } from 'regenerator-runtime';
+
+if (module.hot) {
+  module.hot.accept();
+}
 
 //const recipeContainer = document.querySelector('.recipe');
 //const recipesContainer = document.querySelector('.search-results');
