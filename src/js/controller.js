@@ -12,6 +12,9 @@ import searchView from './views/searchview.js';
 // Importamos la vista de la lista de resultados
 import resultsView from './views/resultsview.js';
 
+// importamos la vista de los botones de paginación
+import paginationView from './views/paginationview.js';
+
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 //import icons from 'url:../img/icons.svg'; // Para la version 2 de Parcel.
@@ -227,8 +230,11 @@ const controlSearchResults = async function () {
 
     // 3) Mostrar resultados
 
-    resultsView.render(model.state.search.results);
+    //resultsView.render(model.state.search.results);
+    resultsView.render(model.getSearchResultsPage());
 
+    // 4) Mostrar los botones de Paginación Inicial
+    paginationView.render(model.state.search);
     /*
     //renderSpinner(recipesContainer);
     
@@ -307,8 +313,16 @@ const controlSearchResults = async function () {
 
 // Refactorizamos el manejo de eventos, según un método de diseño llamado Publicador-Editor por el cual nosotro definimos los eventos según el modelo de arquitectura MVC en la vista(recipeview.js), pero vemos como aquí llamamos en los eventos a una función que se encuentra en el controller.js, la solución es definir la llamada en recipeview.js y éste recibe una función, que será la que le enviamos desde el controller.js.
 
+const controlPagination = function (goToPage) {
+  // 1) Mostrar Nuevos resultados
+  resultsView.render(model.getSearchResultsPage(goToPage));
+  // 2) Mostrar los Nuevos botones de Paginación
+  paginationView.render(model.state.search);
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 };
 init();

@@ -1,5 +1,5 @@
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
-//import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
+import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 import View from './View.js';
 
 class ResultsView extends View {
