@@ -813,8 +813,15 @@ const controlPagination = function(goToPage) {
     // 2) Mostrar los Nuevos botones de Paginación
     (0, _paginationviewJsDefault.default).render(_modelJs.state.search);
 };
+const controlServings = function(newServings) {
+    // 1) Calcular New Valores
+    _modelJs.updateServings(newServings);
+    // 2) Mostrar receta con nuevos valores
+    (0, _recipeviewJsDefault.default).render(_modelJs.state.recipe);
+};
 const init = function() {
     (0, _recipeviewJsDefault.default).addHandlerRender(controlRecipes);
+    (0, _recipeviewJsDefault.default).addHandlerUpdateServings(controlServings);
     (0, _searchviewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationviewJsDefault.default).addHandlerClick(controlPagination);
 };
@@ -2036,6 +2043,7 @@ parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
 parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
 parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage);
+parcelHelpers.export(exports, "updateServings", ()=>updateServings);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -2118,6 +2126,12 @@ const getSearchResultsPage = function(page = state.search.page) {
     const start = (page - 1) * state.search.resultsPerPage;
     const end = page * state.search.resultsPerPage;
     return state.search.results.slice(start, end);
+};
+const updateServings = function(newServings) {
+    state.recipe.ingredients.forEach((ing)=>{
+        ing.quantity = ing.quantity * newServings / state.recipe.servings;
+    });
+    state.recipe.servings = newServings;
 };
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
@@ -2861,6 +2875,16 @@ class RecipeView extends (0, _viewJsDefault.default) {
             "load"
         ].forEach((ev)=>window.addEventListener(ev, handler));
     }
+    // Usamos la delegación de Eventos
+    addHandlerUpdateServings(handler) {
+        this._parentElement.addEventListener("click", function(e) {
+            const btn = e.target.closest(".btn--update-servings");
+            if (!btn) return;
+            // Usamos los dataset del html para establecer propiedades del boton e identificar que boton he pulsado y que valor voy a pasar al handler(). Lo convertimos a numérico con el +
+            const { updateTo  } = btn.dataset;
+            if (+updateTo > 0) handler(+updateTo);
+        });
+    }
     // Mostrar nuestra receta
     _generateMarkup() {
         //console.log(this.#data);
@@ -2877,7 +2901,7 @@ class RecipeView extends (0, _viewJsDefault.default) {
             <svg class="recipe__info-icon">
               <use href="${0, _iconsSvgDefault.default}#icon-clock"></use>
             </svg>
-            <span class="recipe__info-data recipe__info-data--minutes">${this._data.cookigTime}</span>
+            <span class="recipe__info-data recipe__info-data--minutes">${this._data.cookingTime}</span>
             <span class="recipe__info-text">minutes</span>
           </div>
           <div class="recipe__info">
@@ -2888,12 +2912,12 @@ class RecipeView extends (0, _viewJsDefault.default) {
             <span class="recipe__info-text">servings</span>
     
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings - 1}">
                 <svg>
                   <use href="${0, _iconsSvgDefault.default}#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings + 1}">
                 <svg>
                   <use href="${0, _iconsSvgDefault.default}#icon-plus-circle"></use>
                 </svg>
@@ -3261,6 +3285,7 @@ class View {
     render(data) {
         // Comprobamos si no hay datos O si los datos son una matriz de resultados y ésta está vacía,  Si se cumple alguna de las dos mostramos el error.
         if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
+        console.log(data);
         this._data = data;
         const markup = this._generateMarkup();
         this._clear();
