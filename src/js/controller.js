@@ -70,6 +70,11 @@ const controlRecipes = async function () {
     // El spiner ahora es un método de la clase recipeView.
     recipeView.renderSpinner();
 
+    // 0) Update results view to mark selected search result
+    //resultsView.update(model.getSearchResultsPage());
+    //resultsView.render(model.getSearchResultsPage());
+    resultsView.render(model.getSearchResultsPage());
+
     /*
     // 1) Loading recipe
     renderSpinner(recipeContainer);
@@ -324,7 +329,9 @@ const controlServings = function (newServings) {
   // 1) Calcular New Valores
   model.updateServings(newServings);
   // 2) Mostrar receta con nuevos valores
-  recipeView.render(model.state.recipe);
+  //recipeView.render(model.state.recipe);
+  // En vez de renderizar la vista completa, solo actualizaremos los campos de texto y algunas partes del DOM, ya que el cambio de ingredientes no necesita renderizar la imagen de la receta, por ejemplo.
+  recipeView.update(model.state.recipe);
 };
 
 const init = function () {

@@ -12,13 +12,53 @@ export default class View {
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
 
-    console.log(data);
+    //console.log(data);
     this._data = data;
     const markup = this._generateMarkup();
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+  // Crearemos un método para actualizar texto y algunas partes del DOM.
+  update(data) {
+    // if (!data || (Array.isArray(data) && data.length === 0))
+    //   return this.renderError();
 
+    this._data = data;
+    // Vamos a generar un nuevo marcado y este lo compararemos con el anterior y esa será la forma de actualizar, solo actualizaremos lo que cambie.
+    const newMarkup = this._generateMarkup();
+    // convertimos el nuevo marcado en un objeto del DOM para poder compararlo con lo que hay en el DOM actualmente.
+    const newDOM = document.createRange().createContextualFragment(newMarkup);
+    // Lo nuevo del DOM virtual que no está todavía en pantalla. Lo convertimos en un ARRAY.
+    const newElements = Array.from(newDOM.querySelectorAll('*'));
+    // El DOM que se encuentra en pantalla actualmente. Lo convertimos en un ARRAY.
+    const curElements = Array.from(this._parentElement.querySelectorAll('*'));
+    console.log(curElements);
+    console.log(newElements);
+    newElements.forEach((newEl, i) => {
+      const curEl = curElements[i];
+      // Comparamos los dos elementos.
+      //console.log(curEl, newEl.isEqualNode(curEl));
+      // Ademas de comparar los nodos debemos comprobar si el primer hijo en su propiedad nodeValue sin espacios  debe tener texto.
+      // Update changed TEXT
+      if (
+        !newEl.isEqualNode(curEl) &&
+        newEl.firstChild?.nodeValue.trim() !== ''
+      ) {
+        //console.log('❤', newEl.firstChild.nodeValue.trim());
+        curEl.textContent = newEl.textContent;
+      }
+      // TAmbién deberemos cambiar los atributos y eso solo debe hacerse si cambia el texto, nos da igual el nodeValue.
+      // Update changed ATTributes
+      if (!newEl.isEqualNode(curEl)) {
+        //console.log(Array.from(newEl.attributes));
+        // Convertimos en una matriz los atributos que hay para recorrerla con un forEach y hacer lo mismo que hemos hecho con el texto pero con los atributos.
+
+        Array.from(newEl.attributes).forEach(attr =>
+          curEl.setAttribute(attr.name, attr.value)
+        );
+      }
+    });
+  }
   _clear() {
     this._parentElement.innerHTML = '';
   }

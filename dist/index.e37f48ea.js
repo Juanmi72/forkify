@@ -587,6 +587,10 @@ if (module.hot) module.hot.accept();
         // Refactorización
         // El spiner ahora es un método de la clase recipeView.
         (0, _recipeviewJsDefault.default).renderSpinner();
+        // 0) Update results view to mark selected search result
+        //resultsView.update(model.getSearchResultsPage());
+        //resultsView.render(model.getSearchResultsPage());
+        (0, _resultsviewJsDefault.default).render(_modelJs.getSearchResultsPage());
         /*
     // 1) Loading recipe
     renderSpinner(recipeContainer);
@@ -817,7 +821,9 @@ const controlServings = function(newServings) {
     // 1) Calcular New Valores
     _modelJs.updateServings(newServings);
     // 2) Mostrar receta con nuevos valores
-    (0, _recipeviewJsDefault.default).render(_modelJs.state.recipe);
+    //recipeView.render(model.state.recipe);
+    // En vez de renderizar la vista completa, solo actualizaremos los campos de texto y algunas partes del DOM, ya que el cambio de ingredientes no necesita renderizar la imagen de la receta, por ejemplo.
+    (0, _recipeviewJsDefault.default).update(_modelJs.state.recipe);
 };
 const init = function() {
     (0, _recipeviewJsDefault.default).addHandlerRender(controlRecipes);
@@ -3285,11 +3291,41 @@ class View {
     render(data) {
         // Comprobamos si no hay datos O si los datos son una matriz de resultados y ésta está vacía,  Si se cumple alguna de las dos mostramos el error.
         if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
-        console.log(data);
+        //console.log(data);
         this._data = data;
         const markup = this._generateMarkup();
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    // Crearemos un método para actualizar texto y algunas partes del DOM.
+    update(data) {
+        // if (!data || (Array.isArray(data) && data.length === 0))
+        //   return this.renderError();
+        this._data = data;
+        // Vamos a generar un nuevo marcado y este lo compararemos con el anterior y esa será la forma de actualizar, solo actualizaremos lo que cambie.
+        const newMarkup = this._generateMarkup();
+        // convertimos el nuevo marcado en un objeto del DOM para poder compararlo con lo que hay en el DOM actualmente.
+        const newDOM = document.createRange().createContextualFragment(newMarkup);
+        // Lo nuevo del DOM virtual que no está todavía en pantalla. Lo convertimos en un ARRAY.
+        const newElements = Array.from(newDOM.querySelectorAll("*"));
+        // El DOM que se encuentra en pantalla actualmente. Lo convertimos en un ARRAY.
+        const curElements = Array.from(this._parentElement.querySelectorAll("*"));
+        console.log(curElements);
+        console.log(newElements);
+        newElements.forEach((newEl, i)=>{
+            const curEl = curElements[i];
+            // Comparamos los dos elementos.
+            //console.log(curEl, newEl.isEqualNode(curEl));
+            // Ademas de comparar los nodos debemos comprobar si el primer hijo en su propiedad nodeValue sin espacios  debe tener texto.
+            // Update changed TEXT
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") //console.log('❤', newEl.firstChild.nodeValue.trim());
+            curEl.textContent = newEl.textContent;
+            // TAmbién deberemos cambiar los atributos y eso solo debe hacerse si cambia el texto, nos da igual el nodeValue.
+            // Update changed ATTributes
+            if (!newEl.isEqualNode(curEl)) //console.log(Array.from(newEl.attributes));
+            // Convertimos en una matriz los atributos que hay para recorrerla con un forEach y hacer lo mismo que hemos hecho con el texto pero con los atributos.
+            Array.from(newEl.attributes).forEach((attr)=>curEl.setAttribute(attr.name, attr.value));
+        });
     }
     _clear() {
         this._parentElement.innerHTML = "";
@@ -3389,9 +3425,11 @@ class ResultsView extends (0, _viewJsDefault.default) {
         return this._data.map(this._generateMarkupPreview).join("");
     }
     _generateMarkupPreview(result) {
+        // Para que cuando seleccionamos una receta no se renderize todo el DOM vamos a utilizar también update pero debemos dejar marcada la clase "preview__link"
+        const id = window.location.hash.slice(1);
         return `
     <li class="preview">
-        <a class="preview__link" href="#${result.id}">
+        <a class="preview__link ${result.id === id ? "preview__link--active" : ""}" href="#${result.id}">
         <figure class="preview__fig">
             <img src="${result.image}" alt="${result.title}" />
         </figure>
