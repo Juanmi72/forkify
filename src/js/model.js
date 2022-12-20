@@ -16,6 +16,7 @@ export const state = {
     page: 1,
     resultsPerPage: RES_PER_PAGE,
   },
+  bookmarks: [],
 };
 
 export const loadRecipe = async function (id) {
@@ -50,6 +51,13 @@ export const loadRecipe = async function (id) {
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
     };
+
+    // Cargamos como markadas las recetas de la API que están en el array de las bookmarked para que aparezcan con el icono de marcado relleno.
+    if (state.bookmarks.some(bookmark => bookmark.id === id))
+      state.recipe.bookmarked = true;
+    else state.recipe.bookmarked = false;
+
+    console.log(state.recipe);
   } catch (err) {
     // Temp error handling
     console.log(`${err} 💥💥💥💥💥`);
@@ -86,6 +94,8 @@ export const loadSearchResults = async function (query) {
         image: el.image_url,
       };
     });
+    // La inicializamos a 1 para que cuando vuelva a buscar una receta los resultados los muestre desde la page 1.
+    state.search.page = 1;
 
     //console.log(state.search.results);
   } catch (err) {
@@ -110,4 +120,24 @@ export const updateServings = function (newServings) {
   });
 
   state.recipe.servings = newServings;
+};
+
+// Creamos la función que se encargará de establecer una receta con bookmark
+
+export const addBookmark = function (recipe) {
+  // Add Bookmarks
+  state.bookmarks.push(recipe);
+  // Mark currente recipe as bookmark. Agregamos una nueva propiedad llamada bookmarked que establecemos a true en el momento que marcamos la receta.
+  if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+};
+
+// Creamos la función que se encargará de borrar una receta al pulsar en una que está marcada con bookmark
+
+export const deleteBookmark = function (id) {
+  // Encontramos el id en el array bookmarks y si está borramos el elemento del array bookmarks.
+  const index = state.bookmarks.findIndex(el => el.id === id);
+  state.bookmarks.splice(index, 1);
+
+  // Mark currente recipe as NOT bookmarked.
+  if (id === state.recipe.id) state.recipe.bookmarked = false;
 };

@@ -32,8 +32,8 @@ export default class View {
     const newElements = Array.from(newDOM.querySelectorAll('*'));
     // El DOM que se encuentra en pantalla actualmente. Lo convertimos en un ARRAY.
     const curElements = Array.from(this._parentElement.querySelectorAll('*'));
-    console.log(curElements);
-    console.log(newElements);
+    //console.log(curElements);
+    //console.log(newElements);
     newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
       // Comparamos los dos elementos.

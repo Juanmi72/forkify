@@ -825,9 +825,18 @@ const controlServings = function(newServings) {
     // En vez de renderizar la vista completa, solo actualizaremos los campos de texto y algunas partes del DOM, ya que el cambio de ingredientes no necesita renderizar la imagen de la receta, por ejemplo.
     (0, _recipeviewJsDefault.default).update(_modelJs.state.recipe);
 };
+const controlAddBookmark = function() {
+    // Si está desmarcado llamo a agregar al array bookmarks y si está marcado llamo a borrar del array bookmarks.
+    console.log(_modelJs.state.recipe.bookmarked);
+    if (!_modelJs.state.recipe.bookmarked) _modelJs.addBookmark(_modelJs.state.recipe);
+    else _modelJs.deleteBookmark(_modelJs.state.recipe.id);
+    console.log(_modelJs.state.recipe);
+    (0, _recipeviewJsDefault.default).update(_modelJs.state.recipe);
+};
 const init = function() {
     (0, _recipeviewJsDefault.default).addHandlerRender(controlRecipes);
     (0, _recipeviewJsDefault.default).addHandlerUpdateServings(controlServings);
+    (0, _recipeviewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
     (0, _searchviewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationviewJsDefault.default).addHandlerClick(controlPagination);
 };
@@ -2050,6 +2059,8 @@ parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
 parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
 parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage);
 parcelHelpers.export(exports, "updateServings", ()=>updateServings);
+parcelHelpers.export(exports, "addBookmark", ()=>addBookmark);
+parcelHelpers.export(exports, "deleteBookmark", ()=>deleteBookmark);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -2060,7 +2071,8 @@ const state = {
         results: [],
         page: 1,
         resultsPerPage: (0, _configJs.RES_PER_PAGE)
-    }
+    },
+    bookmarks: []
 };
 const loadRecipe = async function(id) {
     // Esta función cambiará nuestro estado global que contendrá la recipe y lo que hará serar cargar la receta con Fetch, que al ser una promesa vamos a manejar sus errores
@@ -2089,6 +2101,10 @@ const loadRecipe = async function(id) {
             cookingTime: recipe.cooking_time,
             ingredients: recipe.ingredients
         };
+        // Cargamos como markadas las recetas de la API que están en el array de las bookmarked para que aparezcan con el icono de marcado relleno.
+        if (state.bookmarks.some((bookmark)=>bookmark.id === id)) state.recipe.bookmarked = true;
+        else state.recipe.bookmarked = false;
+        console.log(state.recipe);
     } catch (err) {
         // Temp error handling
         console.log(`${err} 💥💥💥💥💥`);
@@ -2121,6 +2137,8 @@ const loadSearchResults = async function(query) {
                 image: el.image_url
             };
         });
+        // La inicializamos a 1 para que cuando vuelva a buscar una receta los resultados los muestre desde la page 1.
+        state.search.page = 1;
     //console.log(state.search.results);
     } catch (err) {
         console.log(`${err} 💥💥💥💥💥`);
@@ -2138,6 +2156,19 @@ const updateServings = function(newServings) {
         ing.quantity = ing.quantity * newServings / state.recipe.servings;
     });
     state.recipe.servings = newServings;
+};
+const addBookmark = function(recipe) {
+    // Add Bookmarks
+    state.bookmarks.push(recipe);
+    // Mark currente recipe as bookmark. Agregamos una nueva propiedad llamada bookmarked que establecemos a true en el momento que marcamos la receta.
+    if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+};
+const deleteBookmark = function(id) {
+    // Encontramos el id en el array bookmarks y si está borramos el elemento del array bookmarks.
+    const index = state.bookmarks.findIndex((el)=>el.id === id);
+    state.bookmarks.splice(index, 1);
+    // Mark currente recipe as NOT bookmarked.
+    if (id === state.recipe.id) state.recipe.bookmarked = false;
 };
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
@@ -2891,6 +2922,14 @@ class RecipeView extends (0, _viewJsDefault.default) {
             if (+updateTo > 0) handler(+updateTo);
         });
     }
+    // Para escuchar el boton de bookmarks utilizaremos la delegación de eventos. Se utiliza por que nos interesa la clase 'btn-bookmark que al principio de cargar la aplicación no existe, luego no podemos asignar un addEvenListener a un elemento que no tiene una clase.
+    addHandlerAddBookmark(handler) {
+        this._parentElement.addEventListener("click", function(e) {
+            const btn = e.target.closest(".btn--bookmark");
+            if (!btn) return;
+            handler();
+        });
+    }
     // Mostrar nuestra receta
     _generateMarkup() {
         //console.log(this.#data);
@@ -2933,9 +2972,9 @@ class RecipeView extends (0, _viewJsDefault.default) {
     
           <div class="recipe__user-generated">
           </div>
-          <button class="btn--round">
+          <button class="btn--round btn--bookmark">
             <svg class="">
-              <use href="${0, _iconsSvgDefault.default}#icon-bookmark-fill"></use>
+              <use href="${0, _iconsSvgDefault.default}#icon-bookmark${this._data.bookmarked ? "-fill" : ""}"></use>
             </svg>
           </button>
         </div>
@@ -3310,8 +3349,8 @@ class View {
         const newElements = Array.from(newDOM.querySelectorAll("*"));
         // El DOM que se encuentra en pantalla actualmente. Lo convertimos en un ARRAY.
         const curElements = Array.from(this._parentElement.querySelectorAll("*"));
-        console.log(curElements);
-        console.log(newElements);
+        //console.log(curElements);
+        //console.log(newElements);
         newElements.forEach((newEl, i)=>{
             const curEl = curElements[i];
             // Comparamos los dos elementos.
