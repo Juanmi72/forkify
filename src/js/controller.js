@@ -15,6 +15,9 @@ import resultsView from './views/resultsview.js';
 // importamos la vista de los botones de paginación
 import paginationView from './views/paginationview.js';
 
+// importamos la vista de recetas incluidas en marcadores
+import bookmarksView from './views/bookmarksView.js';
+
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
 //import icons from 'url:../img/icons.svg'; // Para la version 2 de Parcel.
@@ -70,11 +73,9 @@ const controlRecipes = async function () {
     // El spiner ahora es un método de la clase recipeView.
     recipeView.renderSpinner();
 
-    // 0) Update results view to mark selected search result
-    //resultsView.update(model.getSearchResultsPage());
-    //resultsView.render(model.getSearchResultsPage());
+    // 0) Update results view to mark selected search result and bookmarks
     resultsView.render(model.getSearchResultsPage());
-
+    bookmarksView.render(model.state.bookmarks);
     /*
     // 1) Loading recipe
     renderSpinner(recipeContainer);
@@ -335,13 +336,17 @@ const controlServings = function (newServings) {
 };
 
 const controlAddBookmark = function () {
-  // Si está desmarcado llamo a agregar al array bookmarks y si está marcado llamo a borrar del array bookmarks.
+  // 1) Add/remove Bookmarks
 
-  console.log(model.state.recipe.bookmarked);
+  // Si está desmarcado llamo a agregar al array bookmarks y si está marcado llamo a borrar del array bookmarks.
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
-  console.log(model.state.recipe);
+
+  // 2) Update recipe view
   recipeView.update(model.state.recipe);
+
+  // 3) Render bookmarks
+  bookmarksView.render(model.state.bookmarks);
 };
 
 const init = function () {

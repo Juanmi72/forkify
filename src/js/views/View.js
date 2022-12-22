@@ -7,7 +7,7 @@ export default class View {
   //_parentElement = document.querySelector('.results');
   _data;
 
-  render(data) {
+  render(data, render = true) {
     // Comprobamos si no hay datos O si los datos son una matriz de resultados y ésta está vacía,  Si se cumple alguna de las dos mostramos el error.
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
@@ -15,6 +15,10 @@ export default class View {
     //console.log(data);
     this._data = data;
     const markup = this._generateMarkup();
+
+    // render será un chivato para saber si viene de bookmarksView o de resultsview, ya que so es false vendrá de bookmarksView y devolveremos la cadena que tratará en bookmarks en su método _generateMarkup
+    if (!render) return markup;
+
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
