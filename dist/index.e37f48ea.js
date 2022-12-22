@@ -592,143 +592,144 @@ if (module.hot) module.hot.accept();
         (0, _recipeviewJsDefault.default).renderSpinner();
         // 0) Update results view to mark selected search result and bookmarks
         (0, _resultsviewJsDefault.default).render(_modelJs.getSearchResultsPage());
-        (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
+        // 1) Updating bookmarks view
+        (0, _bookmarksViewJsDefault.default).update(_modelJs.state.bookmarks);
         /*
-    // 1) Loading recipe
+    // 2) Loading recipe
     renderSpinner(recipeContainer);
     const res = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
       //'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
-    );
-    const data = await res.json();
-    console.log(res, data.data.recipe);
-
-    // En la API tenemos una propiedad 'ok' que si es false es porque se ha producido un error y nos vale para generar un error nosotros.
-    if (!res.ok) throw Error(`${data.message} ${res.status}`);
-
-    // reformateamos los datos recibidos
-    let { recipe } = data.data;
-    recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients,
-    };
- */ // Refactorización por módulos
+      );
+      const data = await res.json();
+      console.log(res, data.data.recipe);
+      
+      // En la API tenemos una propiedad 'ok' que si es false es porque se ha producido un error y nos vale para generar un error nosotros.
+      if (!res.ok) throw Error(`${data.message} ${res.status}`);
+      
+      // reformateamos los datos recibidos
+      let { recipe } = data.data;
+      recipe = {
+        id: recipe.id,
+        title: recipe.title,
+        publisher: recipe.publisher,
+        sourceUrl: recipe.source_url,
+        image: recipe.image_url,
+        servings: recipe.servings,
+        cookingTime: recipe.cooking_time,
+        ingredients: recipe.ingredients,
+      };
+      */ // Refactorización por módulos
         // Como loadRecipe es una función asíncrona debemos utilizar await.
         await _modelJs.loadRecipe(id);
         // Para Probar
         //const { recipe } = model.state;
-        // 2) Rendering recipe
+        // 3) Rendering recipe
         /* const markup = `
-    <figure class="recipe__fig">
-      <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img" />
-      <h1 class="recipe__title">
-        <span>${recipe.title}</span>
-      </h1>
-    </figure>
-
-    <div class="recipe__details">
-      <div class="recipe__info">
-        <svg class="recipe__info-icon">
-          <use href="${icons}#icon-clock"></use>
-        </svg>
-        <span class="recipe__info-data recipe__info-data--minutes">${
-          recipe.cookigTime
-        }</span>
-        <span class="recipe__info-text">minutes</span>
+     <figure class="recipe__fig">
+     <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img" />
+     <h1 class="recipe__title">
+     <span>${recipe.title}</span>
+     </h1>
+     </figure>
+     
+     <div class="recipe__details">
+     <div class="recipe__info">
+     <svg class="recipe__info-icon">
+     <use href="${icons}#icon-clock"></use>
+     </svg>
+     <span class="recipe__info-data recipe__info-data--minutes">${
+       recipe.cookigTime
+      }</span>
+      <span class="recipe__info-text">minutes</span>
       </div>
       <div class="recipe__info">
-        <svg class="recipe__info-icon">
-          <use href="${icons}#icon-users"></use>
-        </svg>
-        <span class="recipe__info-data recipe__info-data--people">${
-          recipe.servings
-        }</span>
-        <span class="recipe__info-text">servings</span>
-
-        <div class="recipe__info-buttons">
-          <button class="btn--tiny btn--increase-servings">
-            <svg>
-              <use href="${icons}#icon-minus-circle"></use>
-            </svg>
-          </button>
-          <button class="btn--tiny btn--increase-servings">
-            <svg>
-              <use href="${icons}#icon-plus-circle"></use>
-            </svg>
-          </button>
-        </div>
+      <svg class="recipe__info-icon">
+      <use href="${icons}#icon-users"></use>
+      </svg>
+      <span class="recipe__info-data recipe__info-data--people">${
+        recipe.servings
+      }</span>
+      <span class="recipe__info-text">servings</span>
+      
+      <div class="recipe__info-buttons">
+      <button class="btn--tiny btn--increase-servings">
+      <svg>
+      <use href="${icons}#icon-minus-circle"></use>
+      </svg>
+      </button>
+      <button class="btn--tiny btn--increase-servings">
+      <svg>
+      <use href="${icons}#icon-plus-circle"></use>
+      </svg>
+      </button>
       </div>
-
+      </div>
+      
       <div class="recipe__user-generated">
-        <svg>
-          <use href="${icons}#icon-user"></use>
-        </svg>
+      <svg>
+      <use href="${icons}#icon-user"></use>
+      </svg>
       </div>
       <button class="btn--round">
-        <svg class="">
-          <use href="${icons}#icon-bookmark-fill"></use>
-        </svg>
+      <svg class="">
+      <use href="${icons}#icon-bookmark-fill"></use>
+      </svg>
       </button>
-    </div>
-
-    <div class="recipe__ingredients">
+      </div>
+      
+      <div class="recipe__ingredients">
       <h2 class="heading--2">Recipe ingredients</h2>      
       <ul class="recipe__ingredient-list">
       ${recipe.ingredients
         .map(ing => {
           return `
           <li class="recipe__ingredient">
-            <svg class="recipe__icon">
-              <use href="${icons}#icon-check"></use>
-            </svg>
-            <div class="recipe__quantity">${ing.quantity}</div>
-            <div class="recipe__description">
-              <span class="recipe__unit">${ing.unit}</span>
-              ${ing.description}
-            </div>
+          <svg class="recipe__icon">
+          <use href="${icons}#icon-check"></use>
+          </svg>
+          <div class="recipe__quantity">${ing.quantity}</div>
+          <div class="recipe__description">
+          <span class="recipe__unit">${ing.unit}</span>
+          ${ing.description}
+          </div>
           </li>
-        `;
+          `;
         })
         .join('')}
         
-
         
-      </ul>
-    </div>
-
-    <div class="recipe__directions">
-      <h2 class="heading--2">How to cook it</h2>
-      <p class="recipe__directions-text">
+        
+        </ul>
+        </div>
+        
+        <div class="recipe__directions">
+        <h2 class="heading--2">How to cook it</h2>
+        <p class="recipe__directions-text">
         This recipe was carefully designed and tested by
         <span class="recipe__publisher">${
           recipe.publisher
         }</span>. Please check out
         directions at their website.
-      </p>
-      <a
+        </p>
+        <a
         class="btn--small recipe__btn"
         href="${recipe.sourceUrl}"
         target="_blank"
-      >
+        >
         <span>Directions</span>
         <svg class="search__icon">
-          <use href="${icons}#icon-arrow-right"></use>
+        <use href="${icons}#icon-arrow-right"></use>
         </svg>
-      </a>
-    </div>`;
-    recipeContainer.innerHTML = '';
-    recipeContainer.insertAdjacentHTML('afterbegin', markup); */ // Refactorización por módulos
+        </a>
+        </div>`;
+        recipeContainer.innerHTML = '';
+        recipeContainer.insertAdjacentHTML('afterbegin', markup); */ // Refactorización por módulos
         // Utilizamos la clase RecipeView con su metodo render para mostrar esta vista.
         (0, _recipeviewJsDefault.default).render(_modelJs.state.recipe);
     } catch (err) {
-        //console.log(err);
         (0, _recipeviewJsDefault.default).renderError();
+    //console.log(err);
     }
 };
 const controlSearchResults = async function() {
@@ -837,7 +838,11 @@ const controlAddBookmark = function() {
     // 3) Render bookmarks
     (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
 };
+const controlBookmarks = function() {
+    (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
+};
 const init = function() {
+    (0, _bookmarksViewJsDefault.default).addHandlerRender(controlBookmarks);
     (0, _recipeviewJsDefault.default).addHandlerRender(controlRecipes);
     (0, _recipeviewJsDefault.default).addHandlerUpdateServings(controlServings);
     (0, _recipeviewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
@@ -2161,11 +2166,18 @@ const updateServings = function(newServings) {
     });
     state.recipe.servings = newServings;
 };
+// Creamos la función que se encargará de establecer una receta con bookmark
+// Uso de LocalStorage
+const persistBookmarks = function() {
+    localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+};
 const addBookmark = function(recipe) {
     // Add Bookmarks
     state.bookmarks.push(recipe);
     // Mark currente recipe as bookmark. Agregamos una nueva propiedad llamada bookmarked que establecemos a true en el momento que marcamos la receta.
     if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+    // Grabamos bookmarks en LocalStorage.
+    persistBookmarks();
 };
 const deleteBookmark = function(id) {
     // Encontramos el id en el array bookmarks y si está borramos el elemento del array bookmarks.
@@ -2173,7 +2185,19 @@ const deleteBookmark = function(id) {
     state.bookmarks.splice(index, 1);
     // Mark currente recipe as NOT bookmarked.
     if (id === state.recipe.id) state.recipe.bookmarked = false;
+    // Grabamos bookmarks en LocalStorage.
+    persistBookmarks();
 };
+// Usamos una función de inicialización para cargar los elementos del LocalStorage.
+const init = function() {
+    const storage = localStorage.getItem("bookmarks");
+    if (storage) state.bookmarks = JSON.parse(storage);
+};
+init();
+// Usemos una función para borrar los marcadores, solo durante desarrollo
+const clearBookmarks = function() {
+    localStorage.clear("bookmarks");
+}; //clearBookmarks();
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
 /**
@@ -3584,6 +3608,9 @@ class BookmarksView extends (0, _viewJsDefault.default) {
     _parentElement = document.querySelector(".bookmarks__list");
     _errorMessage = "No bookmarks yet. Find a nice recipe and bookmark it :)";
     _message = "";
+    addHandlerRender(handler) {
+        window.addEventListener("load", handler);
+    }
     _generateMarkup() {
         //console.log(this._data);
         return this._data.map((bookmark)=>(0, _previewViewJsDefault.default).render(bookmark, false)).join("");

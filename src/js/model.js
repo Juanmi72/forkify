@@ -124,11 +124,19 @@ export const updateServings = function (newServings) {
 
 // Creamos la función que se encargará de establecer una receta con bookmark
 
+// Uso de LocalStorage
+
+const persistBookmarks = function () {
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+};
+
 export const addBookmark = function (recipe) {
   // Add Bookmarks
   state.bookmarks.push(recipe);
   // Mark currente recipe as bookmark. Agregamos una nueva propiedad llamada bookmarked que establecemos a true en el momento que marcamos la receta.
   if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+  // Grabamos bookmarks en LocalStorage.
+  persistBookmarks();
 };
 
 // Creamos la función que se encargará de borrar una receta al pulsar en una que está marcada con bookmark
@@ -140,4 +148,21 @@ export const deleteBookmark = function (id) {
 
   // Mark currente recipe as NOT bookmarked.
   if (id === state.recipe.id) state.recipe.bookmarked = false;
+  // Grabamos bookmarks en LocalStorage.
+  persistBookmarks();
 };
+
+// Usamos una función de inicialización para cargar los elementos del LocalStorage.
+
+const init = function () {
+  const storage = localStorage.getItem('bookmarks');
+  if (storage) state.bookmarks = JSON.parse(storage);
+};
+init();
+
+// Usemos una función para borrar los marcadores, solo durante desarrollo
+
+const clearBookmarks = function () {
+  localStorage.clear('bookmarks');
+};
+//clearBookmarks();
