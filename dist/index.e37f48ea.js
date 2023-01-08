@@ -538,6 +538,8 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _esRegexpFlagsJs = require("core-js/modules/es.regexp.flags.js");
 var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _modelJs = require("./model.js");
+// importamos desde config.js el tiempo para cerrar el formulario.
+var _configJs = require("./config.js");
 // importamos desde recipeview.js la vista de la receta.
 var _recipeviewJs = require("./views/recipeview.js");
 var _recipeviewJsDefault = parcelHelpers.interopDefault(_recipeviewJs);
@@ -553,6 +555,9 @@ var _paginationviewJsDefault = parcelHelpers.interopDefault(_paginationviewJs);
 // importamos la vista de recetas incluidas en marcadores
 var _bookmarksViewJs = require("./views/bookmarksView.js");
 var _bookmarksViewJsDefault = parcelHelpers.interopDefault(_bookmarksViewJs);
+// importamos la suma de recetas para que se pueda ejecutar el fichero de addición de recetas cuando pulsamos el boton de AddRecipe
+var _addRecipeViewJs = require("./views/addRecipeView.js");
+var _addRecipeViewJsDefault = parcelHelpers.interopDefault(_addRecipeViewJs);
 var _runtime = require("regenerator-runtime/runtime");
 var _regeneratorRuntime = require("regenerator-runtime");
 if (module.hot) module.hot.accept();
@@ -838,8 +843,38 @@ const controlAddBookmark = function() {
     // 3) Render bookmarks
     (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
 };
+// Controla la visualizacion de los marcados como favoritos.
 const controlBookmarks = function() {
     (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
+};
+// Controla la grabación de nuevas recetas en la API de recetas.
+const controlAddRecipe = async function(newRecipe) {
+    // Vamos a capturar los errores que se puedan producir en los formatos de la receta.
+    try {
+        //console.log(newRecipe);
+        // Show loading spinner
+        (0, _addRecipeViewJsDefault.default).renderSpinner();
+        // Upload new recipe load
+        await _modelJs.uploadRecipe(newRecipe);
+        console.log(_modelJs.state.recipe);
+        // Render recipe
+        (0, _recipeviewJsDefault.default).render(_modelJs.state.recipe);
+        // Success message
+        (0, _addRecipeViewJsDefault.default).renderMessage();
+        // Render bookmark view
+        (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
+        // Change ID in URL
+        // Usamos para cambiar la ID de la dirección de la URL la API history de los navegadores. El método pushState nos permite cambiar la URL sin recargar la página.
+        window.history.pushState(null, "", `#${_modelJs.state.recipe.id}`);
+        //  Close form window
+        setTimeout(function() {
+            (0, _addRecipeViewJsDefault.default).toggleWindow();
+        }, (0, _configJs.MODAL_CLOSE_SEC) * 1000);
+    } catch (err) {
+        // Capturamos el error y lo mandamos por pantalla a través de 'renderError()
+        console.error("\uD83D\uDCA5", err);
+        (0, _addRecipeViewJsDefault.default).renderError(err.message);
+    }
 };
 const init = function() {
     (0, _bookmarksViewJsDefault.default).addHandlerRender(controlBookmarks);
@@ -848,10 +883,11 @@ const init = function() {
     (0, _recipeviewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
     (0, _searchviewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationviewJsDefault.default).addHandlerClick(controlPagination);
+    (0, _addRecipeViewJsDefault.default).addHandlerUpload(controlAddRecipe);
 };
 init();
 
-},{"core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1","./views/searchview.js":"furg1","./views/resultsview.js":"4wEfE","regenerator-runtime/runtime":"dXNgZ","regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/paginationview.js":"ixwX5","./views/bookmarksView.js":"4Lqzq"}],"gSXXb":[function(require,module,exports) {
+},{"core-js/modules/es.regexp.flags.js":"gSXXb","core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeview.js":"8Jlc1","./views/searchview.js":"furg1","./views/resultsview.js":"4wEfE","regenerator-runtime/runtime":"dXNgZ","regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/paginationview.js":"ixwX5","./views/bookmarksView.js":"4Lqzq","./views/addRecipeView.js":"i6DNj","./config.js":"k5Hzs"}],"gSXXb":[function(require,module,exports) {
 var global = require("../internals/global");
 var DESCRIPTORS = require("../internals/descriptors");
 var defineBuiltInAccessor = require("../internals/define-built-in-accessor");
@@ -2070,8 +2106,10 @@ parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage);
 parcelHelpers.export(exports, "updateServings", ()=>updateServings);
 parcelHelpers.export(exports, "addBookmark", ()=>addBookmark);
 parcelHelpers.export(exports, "deleteBookmark", ()=>deleteBookmark);
+parcelHelpers.export(exports, "uploadRecipe", ()=>uploadRecipe);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
+//import { getJSON, sendJSON } from './helpers.js';
 var _helpersJs = require("./helpers.js");
 const state = {
     recipe: {},
@@ -2082,6 +2120,24 @@ const state = {
         resultsPerPage: (0, _configJs.RES_PER_PAGE)
     },
     bookmarks: []
+};
+// Usamos una función que creará nuestro objeto de los datos, bien para cuando los cargamos en loadRecipe o cuando los grabamos en uploadRecipe.
+const createRecipeObject = function(data) {
+    const { recipe  } = data.data;
+    return {
+        id: recipe.id,
+        title: recipe.title,
+        publisher: recipe.publisher,
+        sourceUrl: recipe.source_url,
+        image: recipe.image_url,
+        servings: recipe.servings,
+        cookingTime: recipe.cooking_time,
+        ingredients: recipe.ingredients,
+        // Necesitamos agregar la key pero solo si existe una y para ello usamos un truco en el que interviene el shortCut &&, que no es más que si existe la primera parte devuelve la segunda, pero la segunda la ponemos como un objeto y utilizamos la destructuración para que devuelva lo que hay dentro del objeto y así sea como una nueva propiedad con su valor.
+        ...recipe.key && {
+            key: recipe.key
+        }
+    };
 };
 const loadRecipe = async function(id) {
     // Esta función cambiará nuestro estado global que contendrá la recipe y lo que hará serar cargar la receta con Fetch, que al ser una promesa vamos a manejar sus errores
@@ -2097,19 +2153,21 @@ const loadRecipe = async function(id) {
         // // En la API tenemos una propiedad 'ok' que si es false es porque se ha producido un error y nos vale para generar un error nosotros.
         // if (!res.ok) throw Error(`${data.message} ${res.status}`);
         // Refactorización hacia helpers.js
-        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_URL)}/${id}`);
-        // reformateamos los datos recibidos
-        const { recipe  } = data.data;
-        state.recipe = {
-            id: recipe.id,
-            title: recipe.title,
-            publisher: recipe.publisher,
-            sourceUrl: recipe.source_url,
-            image: recipe.image_url,
-            servings: recipe.servings,
-            cookingTime: recipe.cooking_time,
-            ingredients: recipe.ingredients
-        };
+        //const data = await getJSON(`${API_URL}/${id}`);
+        const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}/${id}?key=${(0, _configJs.KEY)}`);
+        // // reformateamos los datos recibidos
+        // const { recipe } = data.data;
+        // state.recipe = {
+        //   id: recipe.id,
+        //   title: recipe.title,
+        //   publisher: recipe.publisher,
+        //   sourceUrl: recipe.source_url,
+        //   image: recipe.image_url,
+        //   servings: recipe.servings,
+        //   cookingTime: recipe.cooking_time,
+        //   ingredients: recipe.ingredients,
+        // };
+        state.recipe = createRecipeObject(data);
         // Cargamos como markadas las recetas de la API que están en el array de las bookmarked para que aparezcan con el icono de marcado relleno.
         if (state.bookmarks.some((bookmark)=>bookmark.id === id)) state.recipe.bookmarked = true;
         else state.recipe.bookmarked = false;
@@ -2132,7 +2190,8 @@ const loadSearchResults = async function(query) {
         state.search.query = query;
         console.log(query);
         //const data = await getJSON(`${API_URL}?search=${inputSearch.value}`);
-        const data = await (0, _helpersJs.getJSON)(`${(0, _configJs.API_URL)}?search=${query}`);
+        // Cargará todas las recetas que continen o no la key nuestra.
+        const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}?search=${query}&key=${(0, _configJs.KEY)}`);
         //console.log(data.data.recipes);
         // reformateamos los datos recibidos y mapeamos la lista de encontrados
         state.search.results = data.data.recipes.map(function(el) {
@@ -2143,7 +2202,10 @@ const loadSearchResults = async function(query) {
                 title: el.title,
                 publisher: el.publisher,
                 sourceUrl: `${0, _configJs.API_URL}/${el.id}`,
-                image: el.image_url
+                image: el.image_url,
+                ...el.key && {
+                    key: el.key
+                }
             };
         });
         // La inicializamos a 1 para que cuando vuelva a buscar una receta los resultados los muestre desde la page 1.
@@ -2197,7 +2259,41 @@ init();
 // Usemos una función para borrar los marcadores, solo durante desarrollo
 const clearBookmarks = function() {
     localStorage.clear("bookmarks");
-}; //clearBookmarks();
+};
+const uploadRecipe = async function(newRecipe) {
+    // Usamos try y catch para recoger el posible error de la función asíncrona y generar un nuevo error que se capturará en nuestro controller.
+    try {
+        // Cambiaremos el formato de los datos recibidos al formato que requiere la API de recetas
+        console.log(Object.entries(newRecipe));
+        // Obtendremos un array con las entradas de nueva receta y de ese array filtraremos las propiedades que tienen como primer elemento la palabra ingredients y además su segundo valor es diferente de una cadena vacía. Una vez obtenida este array lo mapearemos para que nos separe de cada elemento tres valores que serán cantidad,unidad y descripción.
+        const ingredients = Object.entries(newRecipe).filter((entry)=>entry[0].startsWith("ingredient") && entry[1] !== "").map((ing)=>{
+            const ingArr = ing[1].split(",").map((el)=>el.trim());
+            //const ingArr = ing[1].replaceAll(' ', '').split(',');
+            if (ingArr.length !== 3) throw new Error("Wrong ingredient format! Please use the correct format :)");
+            const [quantity, unit, description] = ingArr;
+            return {
+                quantity: quantity ? +quantity : null,
+                unit,
+                description
+            };
+        });
+        // Construimos nuestro objeto que se subirá a la API de recetas.
+        const recipe = {
+            title: newRecipe.title,
+            source_url: newRecipe.sourceUrl,
+            image_url: newRecipe.image,
+            publisher: newRecipe.publisher,
+            cooking_time: +newRecipe.cookingTime,
+            servings: +newRecipe.servings,
+            ingredients
+        };
+        const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}?key=${(0, _configJs.KEY)}`, recipe);
+        state.recipe = createRecipeObject(data);
+        addBookmark(state.recipe);
+    } catch (err) {
+        throw err;
+    }
+};
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
 /**
@@ -2787,9 +2883,13 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
 parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC);
 parcelHelpers.export(exports, "RES_PER_PAGE", ()=>RES_PER_PAGE);
+parcelHelpers.export(exports, "KEY", ()=>KEY);
+parcelHelpers.export(exports, "MODAL_CLOSE_SEC", ()=>MODAL_CLOSE_SEC);
 const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes";
 const TIMEOUT_SEC = 10;
 const RES_PER_PAGE = 10;
+const KEY = "9eb24bec-d4b1-4244-9d3c-e774aebe07ec";
+const MODAL_CLOSE_SEC = 2.5;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
@@ -2825,7 +2925,7 @@ exports.export = function(dest, destName, get) {
 // Este fichero contendrá una serie de funciones que vamos a estar utilizando todo el tiempo en otros módulos.
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getJSON", ()=>getJSON);
+parcelHelpers.export(exports, "AJAX", ()=>AJAX);
 var _configJs = require("./config.js");
 // esto es una funcion que devuelve una promesa que tiene un setTimeout.
 const timeout = function(s) {
@@ -2835,10 +2935,17 @@ const timeout = function(s) {
         }, s * 1000);
     });
 };
-const getJSON = async function(url) {
+const AJAX = async function(url, uploadData) {
     try {
+        // Utilizamos un condicional para la variable que cambia de valor según la llamada que sea, get o send.
+        const fetchPro = uploadData ? fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(uploadData)
+        }) : fetch(url);
         // Utilizamos el timeout y ejecutamos el Promise.race para que la primera función asíncrona que se ejecute paralize a la otra.
-        const fetchPro = fetch(url);
         const res = await Promise.race([
             fetchPro,
             timeout((0, _configJs.TIMEOUT_SEC))
@@ -2850,7 +2957,41 @@ const getJSON = async function(url) {
         // Para poder controlar el error que se produce aquí en la petición en el fichero model.js que es desde donde se llama a esta función, cuando se produzca el error aquí lo atrapamos con el catch y generamos un nuevo error en el catch con thorow. Con esto forzamos a que la promesa que devuelve la función asíncrona getJSON será rechazada y la podremos tratar en el catch del fichero que la llamó.
         throw err;
     }
+}; /* // Esta función se encargará de realizar la petición al fetch y devolver la data.
+export const getJSON = async function (url) {
+  try {
+    // Utilizamos el timeout y ejecutamos el Promise.race para que la primera función asíncrona que se ejecute paralize a la otra.
+    const fetchPro = fetch(url);
+    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+    const data = await res.json();
+
+    if (!res.ok) throw Error(`${data.message} ${res.status}`);
+    return data;
+  } catch (err) {
+    // Para poder controlar el error que se produce aquí en la petición en el fichero model.js que es desde donde se llama a esta función, cuando se produzca el error aquí lo atrapamos con el catch y generamos un nuevo error en el catch con thorow. Con esto forzamos a que la promesa que devuelve la función asíncrona getJSON será rechazada y la podremos tratar en el catch del fichero que la llamó.
+    throw err;
+  }
 };
+
+// Esta función se encargará de enviar los datos a nuestra API de recetas.
+export const sendJSON = async function (url, uploadData) {
+  try {
+    // Utilizamos el timeout y ejecutamos el Promise.race para que la primera función asíncrona que se ejecute paralize a la otra.
+    const fetchPro = fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(uploadData),
+    });
+    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+    const data = await res.json();
+
+    if (!res.ok) throw Error(`${data.message} ${res.status}`);
+    return data;
+  } catch (err) {
+    // Para poder controlar el error que se produce aquí en la petición en el fichero model.js que es desde donde se llama a esta función, cuando se produzca el error aquí lo atrapamos con el catch y generamos un nuevo error en el catch con thorow. Con esto forzamos a que la promesa que devuelve la función asíncrona getJSON será rechazada y la podremos tratar en el catch del fichero que la llamó.
+    throw err;
+  }
+}; */ 
 
 },{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8Jlc1":[function(require,module,exports) {
 // En la arquitectura MVC Model-View-Controler este archivo contendrá la vista de la receta y tendremos otros ficheros para las otras vistas.
@@ -2998,7 +3139,10 @@ class RecipeView extends (0, _viewJsDefault.default) {
             </div>
           </div>
     
-          <div class="recipe__user-generated">
+          <div class="recipe__user-generated ${this._data.key ? "" : "hidden"}">
+            <svg>
+              <use href="${0, _iconsSvgDefault.default}#icon-user"></use>
+            </svg>
           </div>
           <button class="btn--round btn--bookmark">
             <svg class="">
@@ -3515,13 +3659,18 @@ class PreviewView extends (0, _viewJsDefault.default) {
         return `
     <li class="preview">
         <a class="preview__link ${this._data.id === id ? "preview__link--active" : ""}" href="#${this._data.id}">
-        <figure class="preview__fig">
-            <img src="${this._data.image}" alt="${this._data.title}" />
-        </figure>
-        <div class="preview__data">
-            <h4 class="preview__title">${this._data.title} ...</h4>
-            <p class="preview__publisher">${this._data.publisher}</p>
-        </div>
+          <figure class="preview__fig">
+              <img src="${this._data.image}" alt="${this._data.title}" />
+          </figure>
+          <div class="preview__data">
+              <h4 class="preview__title">${this._data.title} ...</h4>
+              <p class="preview__publisher">${this._data.publisher}</p>
+              <div class="preview__user-generated ${this._data.key ? "" : "hidden"}">
+                <svg>
+                  <use href="${0, _iconsSvgDefault.default}#icon-user"></use>
+                </svg>
+              </div>
+          </div>
         </a>
     </li>`;
     }
@@ -3618,6 +3767,60 @@ class BookmarksView extends (0, _viewJsDefault.default) {
 }
 exports.default = new BookmarksView();
 
-},{"url:../../img/icons.svg":"loVOp","./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./previewView.js":"1FDQ6"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
+},{"url:../../img/icons.svg":"loVOp","./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./previewView.js":"1FDQ6"}],"i6DNj":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _iconsSvg = require("url:../../img/icons.svg"); // Para la version 2 de Parcel.
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+class AddRecipeView extends (0, _viewJsDefault.default) {
+    // La vista del formulario para cargar una nueva receta ya está en el html, con lo cual solo tenemos que poner o quitar la clase 'hidden' del div que contiene el formulario.
+    //El formulario está en un elemento Form de html con la clase 'upload'
+    _parentElement = document.querySelector(".upload");
+    _message = "Recipe was succssfully uploaded:)";
+    _window = document.querySelector(".add-recipe-window");
+    _overlay = document.querySelector(".overlay");
+    // Tendremos un elemento button para abrir el formulario en la barra de navegación con la clase 'nav_btn--add-recipe' y otro en el formulario para cerrar dicho formulario con la clase 'btn--close-modal'
+    _btnOpen = document.querySelector(".nav__btn--add-recipe");
+    _btnClose = document.querySelector(".btn--close-modal");
+    // Utilizamos el constructor para llamar a este método de escucha de eventos, para poder utilizar el objeto this correctamente y que apunte a elemento correcto del html.
+    constructor(){
+        super();
+        this._addHandlerShowWindow();
+        this._addHandlerHideWindow();
+    }
+    toggleWindow() {
+        this._overlay.classList.toggle("hidden");
+        this._window.classList.toggle("hidden");
+    }
+    // Escuchamos los eventos
+    // Este es cuando abrimos el formulario.
+    _addHandlerShowWindow() {
+        this._btnOpen.addEventListener("click", this.toggleWindow.bind(this));
+    }
+    // Este es si cerramos el formulario en el btn de la X o si pulsamos con el raton fuera del formulario.
+    _addHandlerHideWindow() {
+        this._btnClose.addEventListener("click", this.toggleWindow.bind(this));
+        this._overlay.addEventListener("click", this.toggleWindow.bind(this));
+    }
+    // Este es para guardar los datos introducidos en el formulario.
+    addHandlerUpload(handler) {
+        this._parentElement.addEventListener("submit", function(e) {
+            e.preventDefault();
+            // Nos ayudaremos de una API del navegador llamada 'ForData', le tenemos que pasar un formulario, que en nuestro caso es 'this' ya que estamos en una función de manejador de eventos. Este objeto que recibimos lo vamos a meter en un array para poder trabajar con él con la destructuración. Estos datos se usan para subirlos a la API de recetas y donde ocurren las llamadas a esta API?, en el fichero model.js así que debemos buscar la manera de llevar estos datos a ese fichero y lo haremos creando en controller.js una función que controle ese procedimiento.
+            const dataArr = [
+                ...new FormData(this)
+            ];
+            // ahora convertiremos este array que contiene 12 arrays, pues el formulario tiene doce campos, con dos valores cada array, titulo y valor en un Objet através de la propiedad fromEntries, para poder tratarlo como un objeto.
+            const data = Object.fromEntries(dataArr);
+            handler(data);
+        });
+    }
+    _generateMarkup() {}
+}
+exports.default = new AddRecipeView();
+
+},{"url:../../img/icons.svg":"loVOp","./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map

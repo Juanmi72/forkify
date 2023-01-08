@@ -3,6 +3,9 @@
 // Importamos desde model tanto el objeto state como la función loadRecipe(). Al hacerlo como model, después las podemos llamar con model.state o model.loadRecipe().
 import * as model from './model.js';
 
+// importamos desde config.js el tiempo para cerrar el formulario.
+import { MODAL_CLOSE_SEC } from './config.js';
+
 // importamos desde recipeview.js la vista de la receta.
 import recipeView from './views/recipeview.js';
 
@@ -17,6 +20,9 @@ import paginationView from './views/paginationview.js';
 
 // importamos la vista de recetas incluidas en marcadores
 import bookmarksView from './views/bookmarksView.js';
+
+// importamos la suma de recetas para que se pueda ejecutar el fichero de addición de recetas cuando pulsamos el boton de AddRecipe
+import addRecipeView from './views/addRecipeView.js';
 
 // Como estamos usando Parcel va a buscar los iconos a la ruta de dist, pero nosotros en nuestro Template de abajo utilizamos las rutas locales, y no los carga si no los importamos.
 //import icons from '../img/icons.svg'; // Para la version 1 de Parcel.
@@ -351,8 +357,45 @@ const controlAddBookmark = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
+// Controla la visualizacion de los marcados como favoritos.
 const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks);
+};
+
+// Controla la grabación de nuevas recetas en la API de recetas.
+const controlAddRecipe = async function (newRecipe) {
+  // Vamos a capturar los errores que se puedan producir en los formatos de la receta.
+  try {
+    //console.log(newRecipe);
+    // Show loading spinner
+    addRecipeView.renderSpinner();
+
+    // Upload new recipe load
+    await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe);
+
+    // Render recipe
+    recipeView.render(model.state.recipe);
+
+    // Success message
+    addRecipeView.renderMessage();
+
+    // Render bookmark view
+    bookmarksView.render(model.state.bookmarks);
+
+    // Change ID in URL
+    // Usamos para cambiar la ID de la dirección de la URL la API history de los navegadores. El método pushState nos permite cambiar la URL sin recargar la página.
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+
+    //  Close form window
+    setTimeout(function () {
+      addRecipeView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (err) {
+    // Capturamos el error y lo mandamos por pantalla a través de 'renderError()
+    console.error('💥', err);
+    addRecipeView.renderError(err.message);
+  }
 };
 
 const init = function () {
@@ -362,5 +405,6 @@ const init = function () {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView.addHandlerUpload(controlAddRecipe);
 };
 init();

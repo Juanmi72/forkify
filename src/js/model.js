@@ -3,8 +3,9 @@
 // Importamos varias cosas
 
 import { async } from 'regenerator-runtime';
-import { API_URL, RES_PER_PAGE } from './config.js';
-import { getJSON } from './helpers.js';
+import { API_URL, RES_PER_PAGE, KEY } from './config.js';
+//import { getJSON, sendJSON } from './helpers.js';
+import { AJAX } from './helpers.js';
 
 // Tendremos un estado global que será un objeto que contiene lo que hemos dicho arriba.
 
@@ -17,6 +18,25 @@ export const state = {
     resultsPerPage: RES_PER_PAGE,
   },
   bookmarks: [],
+};
+
+// Usamos una función que creará nuestro objeto de los datos, bien para cuando los cargamos en loadRecipe o cuando los grabamos en uploadRecipe.
+
+const createRecipeObject = function (data) {
+  const { recipe } = data.data;
+
+  return {
+    id: recipe.id,
+    title: recipe.title,
+    publisher: recipe.publisher,
+    sourceUrl: recipe.source_url,
+    image: recipe.image_url,
+    servings: recipe.servings,
+    cookingTime: recipe.cooking_time,
+    ingredients: recipe.ingredients,
+    // Necesitamos agregar la key pero solo si existe una y para ello usamos un truco en el que interviene el shortCut &&, que no es más que si existe la primera parte devuelve la segunda, pero la segunda la ponemos como un objeto y utilizamos la destructuración para que devuelva lo que hay dentro del objeto y así sea como una nueva propiedad con su valor.
+    ...(recipe.key && { key: recipe.key }),
+  };
 };
 
 export const loadRecipe = async function (id) {
@@ -36,21 +56,23 @@ export const loadRecipe = async function (id) {
     // if (!res.ok) throw Error(`${data.message} ${res.status}`);
 
     // Refactorización hacia helpers.js
-    const data = await getJSON(`${API_URL}/${id}`);
+    //const data = await getJSON(`${API_URL}/${id}`);
+    const data = await AJAX(`${API_URL}/${id}?key=${KEY}`);
 
-    // reformateamos los datos recibidos
-    const { recipe } = data.data;
+    // // reformateamos los datos recibidos
+    // const { recipe } = data.data;
 
-    state.recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients,
-    };
+    // state.recipe = {
+    //   id: recipe.id,
+    //   title: recipe.title,
+    //   publisher: recipe.publisher,
+    //   sourceUrl: recipe.source_url,
+    //   image: recipe.image_url,
+    //   servings: recipe.servings,
+    //   cookingTime: recipe.cooking_time,
+    //   ingredients: recipe.ingredients,
+    // };
+    state.recipe = createRecipeObject(data);
 
     // Cargamos como markadas las recetas de la API que están en el array de las bookmarked para que aparezcan con el icono de marcado relleno.
     if (state.bookmarks.some(bookmark => bookmark.id === id))
@@ -78,7 +100,8 @@ export const loadSearchResults = async function (query) {
     state.search.query = query;
     console.log(query);
     //const data = await getJSON(`${API_URL}?search=${inputSearch.value}`);
-    const data = await getJSON(`${API_URL}?search=${query}`);
+    // Cargará todas las recetas que continen o no la key nuestra.
+    const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
 
     //console.log(data.data.recipes);
     // reformateamos los datos recibidos y mapeamos la lista de encontrados
@@ -92,6 +115,7 @@ export const loadSearchResults = async function (query) {
         publisher: el.publisher,
         sourceUrl: `${API_URL}/${el.id}`,
         image: el.image_url,
+        ...(el.key && { key: el.key }),
       };
     });
     // La inicializamos a 1 para que cuando vuelva a buscar una receta los resultados los muestre desde la page 1.
@@ -166,3 +190,42 @@ const clearBookmarks = function () {
   localStorage.clear('bookmarks');
 };
 //clearBookmarks();
+
+// Usamos esta función para subir los datos de la nueva receta a la API de recetas.
+export const uploadRecipe = async function (newRecipe) {
+  // Usamos try y catch para recoger el posible error de la función asíncrona y generar un nuevo error que se capturará en nuestro controller.
+  try {
+    // Cambiaremos el formato de los datos recibidos al formato que requiere la API de recetas
+    console.log(Object.entries(newRecipe));
+    // Obtendremos un array con las entradas de nueva receta y de ese array filtraremos las propiedades que tienen como primer elemento la palabra ingredients y además su segundo valor es diferente de una cadena vacía. Una vez obtenida este array lo mapearemos para que nos separe de cada elemento tres valores que serán cantidad,unidad y descripción.
+    const ingredients = Object.entries(newRecipe)
+      .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
+      .map(ing => {
+        const ingArr = ing[1].split(',').map(el => el.trim());
+        //const ingArr = ing[1].replaceAll(' ', '').split(',');
+        if (ingArr.length !== 3)
+          throw new Error(
+            'Wrong ingredient format! Please use the correct format :)'
+          );
+
+        const [quantity, unit, description] = ingArr;
+        return { quantity: quantity ? +quantity : null, unit, description };
+      });
+    // Construimos nuestro objeto que se subirá a la API de recetas.
+    const recipe = {
+      title: newRecipe.title,
+      source_url: newRecipe.sourceUrl,
+      image_url: newRecipe.image,
+      publisher: newRecipe.publisher,
+      cooking_time: +newRecipe.cookingTime,
+      servings: +newRecipe.servings,
+      ingredients,
+    };
+
+    const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
+    state.recipe = createRecipeObject(data);
+    addBookmark(state.recipe);
+  } catch (err) {
+    throw err;
+  }
+};
