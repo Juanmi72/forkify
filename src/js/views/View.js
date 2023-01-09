@@ -6,7 +6,15 @@ import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 export default class View {
   //_parentElement = document.querySelector('.results');
   _data;
-
+  /**
+   * Render the received object to the DOM
+   * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
+   * @param {boolean} [render=true] If false, create markup string instead of rendering to the DOM
+   * @returns {undefined | string} A markup string is returned if render=false
+   * @this {Object} View instance
+   * @author Juanmi
+   * @todo Finish implementation
+   */
   render(data, render = true) {
     // Comprobamos si no hay datos O si los datos son una matriz de resultados y ésta está vacía,  Si se cumple alguna de las dos mostramos el error.
     if (!data || (Array.isArray(data) && data.length === 0))
