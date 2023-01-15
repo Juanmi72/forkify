@@ -7,7 +7,8 @@ import icons from 'url:../../img/icons.svg'; // Para la version 2 de Parcel.
 // Usamos una librería llamada fractional que la hemos instalado con:
 // npm install fractional
 // y la usaremos para convertir los 0.5 en 1/2.
-import { Fraction } from 'fractional';
+//import { Fraction } from 'fractional';
+import fracty from 'fracty';
 //console.log(Fraction);
 
 // Refactorizamos las vistas en todo lo que se va a repetir en las dos vistas.
@@ -211,7 +212,8 @@ class RecipeView extends View {
           <use href="${icons}#icon-check"></use>
         </svg>
         <div class="recipe__quantity">${
-          ing.quantity ? new Fraction(ing.quantity).toString() : ''
+          //ing.quantity ? new Fraction(ing.quantity).toString() : ''
+          ing.quantity ? fracty(ing.quantity).toString() : ''
         }</div>
         <div class="recipe__description">
           <span class="recipe__unit">${ing.unit}</span>
